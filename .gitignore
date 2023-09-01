@@ -1,0 +1,70 @@
+# Ignore compiled code files
+*.pyc
+*.pyo
+__pycache__/
+
+# Ignore system-specific or backup files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Ignore IDE and editor directories/files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Ignore dependency directories
+node_modules/
+venv/
+.env
+
+# Ignore log files
+*.log
+
+# Ignore compiled files and build directories
+build/
+dist/
+*.egg-info/
+*.egg/
+*.pyc
+
+# Ignore database files
+*.sqlite3
+
+# Ignore configuration files with sensitive data (Add your own!)
+config.ini
+secrets.yaml
+
+# Ignore package manager lock files
+yarn.lock
+package-lock.json
+pipfile.lock
+
+# Ignore user-specific and temporary files
+*.bak
+*.backup
+*.tmp
+*.tmp.*
+*.swp
+*~
+.temp/
+
+# Ignore cache and test directories
+.cache/
+.pytest_cache/
+
+# Ignore project-specific config files
+project.settings
+
+# Ignore editor config files
+.editorconfig
+
+# Ignore static and user-uploaded files (for web projects)
+static/
+media/
+uploads/
