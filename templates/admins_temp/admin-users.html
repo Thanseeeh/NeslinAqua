@@ -6,15 +6,59 @@
 
 {% block content %} 
 
-<!-- Blank Start -->
+<!-- Content Start -->
 <div class="container-fluid pt-4 px-4">
-    <div class="row vh-100 bg-light rounded align-items-center justify-content-center mx-0">
-        <div class="col-md-6 text-center">
-            <h3>This is blank page</h3>
+  <div class="row bg-light rounded align-items-center justify-content-center mx-0">
+    <div class="main-panel mt-5 mb-5">
+      <div class="content-wrapper mt-5 mb-5">
+        <h2 style="text-align: center">User Control</h2>
+        <div class="col-sm-12 d-flex justify-content-center">
+          <form method="GET" action="{% url 'admin_users' %}">
+            <div class="bg-glass d-flex container-fluid">
+              <input type="text" name="q" placeholder="Search users...">
+              <button type="submit" class="btn btn-outline-primary">Search</button>
+            </div>
+          </form>
         </div>
+        <div class="col-sm-12 justify-content-center">
+          <div class="bg-light rounded h-100 p-4">
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead>
+                      <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Username</th>
+                          <th scope="col">is_active</th>
+                          <th scope="col">last_login</th>
+                          <th scope="col">control</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    {% for i in data %}
+                        <tr>
+                        <td><span class="ps-2"> {{i.id}} </span></td>
+                        <td> {{i.username}} </td>
+                        <td> {{i.is_active}} </td>
+                        <td> {{i.date_joined}} </td>
+                        <td>
+                            {% if i.is_active%}
+                                <a class="btn btn-outline-danger" href="{% url 'block_user' i.id %}" onclick="return confirm('Are you sure you want to block this user?')">block</a>
+                            {% else %}
+                                <a class="btn btn-outline-primary" href="{% url 'unblock_user' i.id %}" onclick="return confirm('Unblock the User?')">unblock</a>
+                            {% endif %}
+                        </td>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
-<!-- Blank End -->
+<!-- Content End -->
 
 <script>
     var mylink=document.getElementById("admin_users")

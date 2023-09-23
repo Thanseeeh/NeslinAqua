@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from accounts.models import Account
 
 # Create your views here.
 
@@ -22,9 +23,32 @@ def admin_routes(request):
 
 # Admin Users
 def admin_users(request):
-    return render(request, 'admins_temp/admin-users.html')
+    if 'q' in request.GET:
+        q = request.GET['q']
+        data = Account.objects.filter(username__icontains=q)
+    else:
+        data = Account.objects.all().order_by('id')
+
+    context = {'data': data}
+    return render(request, 'admins_temp/admin-users.html', context)
 
 
 # Admin Transactions
 def admin_transactions(request):
     return render(request, 'admins_temp/admin-transactions.html')
+
+
+#Block user
+def block_user(request, user_id):
+    user = Account.objects.get(id=user_id)
+    user.is_active = False
+    user.save()
+    return redirect('admin_users')
+
+
+#UnBlock user
+def unblock_user(request, user_id):
+    user = Account.objects.get(id=user_id)
+    user.is_active = True
+    user.save()
+    return redirect('admin_users')
