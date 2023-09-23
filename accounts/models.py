@@ -5,14 +5,11 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 class MyAccountManager(BaseUserManager):
-    def create_user(self, email, username, password=None):
-        if not email:
-            raise ValueError('User must have an email address')
+    def create_user(self, username, password=None):
         if not username:
             raise ValueError('User must have an username')
         
         user = self.model(
-            email = self.normalize_email(email),
             username = username,
         )
 
@@ -20,9 +17,8 @@ class MyAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
     
-    def create_superuser(self, email, username, password):
+    def create_superuser(self, username, password):
         user = self.create_user(
-            email = self.normalize_email(email),
             username = username,
             password = password,
         )
@@ -37,7 +33,6 @@ class MyAccountManager(BaseUserManager):
 
 
 class Account(AbstractBaseUser):
-    email       = models.EmailField(max_length=100, unique=True)
     username    = models.CharField(max_length=100, unique=True)
 
     date_joined = models.DateTimeField(auto_now_add=True)
@@ -49,7 +44,6 @@ class Account(AbstractBaseUser):
 
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email']
 
     objects = MyAccountManager()
 

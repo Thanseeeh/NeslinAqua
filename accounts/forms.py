@@ -5,14 +5,10 @@ from .models import Account
 class Registrationform(forms.ModelForm):
     class Meta:
         model = Account
-        fields = ['username', 'email', 'password', 'confirm_password']
+        fields = ['username', 'password', 'confirm_password']
 
     username = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Username'})
-    )
-    
-    email = forms.EmailField(
-        widget=forms.EmailInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Email address'})
     )
 
     password = forms.CharField(

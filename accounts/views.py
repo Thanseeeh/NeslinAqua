@@ -27,7 +27,6 @@ def sign_up(request):
     if request.method == 'POST':
         form = Registrationform(request.POST)
         if form.is_valid():
-            email = form.cleaned_data['email']
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             confirm_password = form.cleaned_data['confirm_password']
@@ -37,7 +36,7 @@ def sign_up(request):
                 messages.info(request, 'Username already exists.')
                 return redirect('sign_up')
 
-            user = Account.objects.create_user(email=email, username=username, password=password)
+            user = Account.objects.create_user(username=username, password=password)
             user.set_password(password)
             user.is_active = True
             user.save()
@@ -65,9 +64,12 @@ def login_user(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
+        print(username)
+        print(password)
 
         user=auth.authenticate(username=username,password=password)
-        if user is not None and user.is_superuser:
+        print(user)
+        if user is not None and user.is_superadmin:
             request.session['super_username'] = username
             auth.login(request,user)
             return redirect('admin_home')
