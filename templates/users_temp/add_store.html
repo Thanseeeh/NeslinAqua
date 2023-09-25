@@ -87,16 +87,19 @@
                     <div class="container-fluid">
                         <div class="row h-100 align-items-center justify-content-center">
                             <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 w-100">
-                                <form class="bg-light rounded p-4 p-sm-5 my-4 mx-3 shadow" action="{% url 'sign_up' %}" method="post">
+                                <form class="bg-light rounded p-4 p-sm-5 my-4 mx-3 shadow" action="{% url 'add_store' %}" method="post">
                                     {% csrf_token %}
                                     <div class="d-flex align-items-center justify-content-between mb-3">
-                                        <a href="{% url 'admin_home' %}" class="">
-                                            <h4 class="text-primary"><img src="{% static 'img/favicon.png' %}" style="width: 30px">Ameen Distributers</h4>
+                                        <h4 class="text-primary">+ Add Store</h4>
+                                        <a href="{% url 'home' %}" class="">
+                                            <h6 class="text-muted"><i class="fa fa-arrow-left"></i> back</h6>
                                         </a>
                                     </div>
-                                    {{ form.username }}
-                                    {{ form.password }}
-                                    {{ form.confirm_password }}
+                                    Name of the Store: {{ form.name }}
+                                    Price for Jar:{{ form.price_for_jar }}
+                                    No. of Stands:{{ form.stand }}
+                                    No. of Dispencer:{{ form.dispencer }}
+                                    No. of Jar:{{ form.jar }}
                                     <button type="submit" class="btn btn-primary py-3 w-100 mb-4 fw-bold">Submit</button>
                                 </form>
                                 <div class="form-group" style="color: red; text-align: center">

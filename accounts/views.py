@@ -4,18 +4,6 @@ from .forms import Registrationform
 from .models import Account
 from django.contrib.auth.decorators import login_required
 
-# vertification email and reset password
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
-from django.utils.encoding import force_bytes
-from django.contrib.auth.tokens import default_token_generator
-from django.core.mail import EmailMessage
-from django.views.decorators.cache import cache_control
-import re, random
-from datetime import datetime, timedelta
-from django.utils import timezone
-
 # Create your views here.
 
 

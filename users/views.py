@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import StoreForm
 
 # Create your views here.
 
@@ -17,4 +19,16 @@ def profile(request):
 
 # AddStore
 def add_store(request):
-    return render(request, 'users_temp/add_store.html')
+    route = request.user
+    if request.method == 'POST':
+        form = StoreForm(request.POST)
+        if form.is_valid():
+            store = form.save(commit=False)
+            store.route = route
+            store.save()
+            messages.info(request, 'Store Created Successfully')
+            return redirect('home')
+    else:
+        form = StoreForm()
+        context = {'form': form, 'route': route}
+    return render(request, 'users_temp/add_store.html', context)
