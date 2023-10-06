@@ -27,9 +27,10 @@
                       <tr>
                           <th scope="col">#</th>
                           <th scope="col">Username</th>
-                          <th scope="col">is_active</th>
+                          <th scope="col">Is_active</th>
                           <th scope="col">last_login</th>
-                          <th scope="col">control</th>
+                          <th scope="col">Control</th>
+                          <th scope="col">Edit_User</th>
                       </tr>
                   </thead>
                   <tbody>
@@ -38,7 +39,7 @@
                         <td><span class="ps-2"> {{i.id}} </span></td>
                         <td> {{i.username}} </td>
                         <td> {{i.is_active}} </td>
-                        <td> {{i.date_joined}} </td>
+                        <td> {{i.last_login}} </td>
                         <td>
                             {% if i.is_active%}
                                 <a class="btn btn-outline-danger" href="{% url 'block_user' i.id %}" onclick="return confirm('Are you sure you want to block this user?')">block</a>
@@ -46,6 +47,9 @@
                                 <a class="btn btn-outline-primary" href="{% url 'unblock_user' i.id %}" onclick="return confirm('Unblock the User?')">unblock</a>
                             {% endif %}
                         </td>
+                        <td>
+                          <a class="btn btn-outline-success" href="{% url 'edit_user' i.id %}">Edit</a>
+                      </td>
                         </tr>
                     {% endfor %}
                   </tbody>
