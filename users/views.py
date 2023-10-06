@@ -12,6 +12,11 @@ def home(request):
     return render(request, 'users_temp/index.html')
 
 
+# Payments
+def payments(request):
+    return render(request, 'users_temp/payments.html')
+
+
 # Profile
 def profile(request):
     return render(request, 'users_temp/profile.html')
