@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'accounts.middleware.SessionTimeoutMiddleware', 
 ]
 
 ROOT_URLCONF = 'neslin.urls'
@@ -141,3 +142,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/uploads')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.Account'
+
+# Session timeout in seconds (e.g., 6 hours)
+SESSION_COOKIE_AGE = 21600  # 6 hours
+
+# Update the session timeout on every request
+SESSION_SAVE_EVERY_REQUEST = True
