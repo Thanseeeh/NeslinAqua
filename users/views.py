@@ -22,18 +22,3 @@ def profile(request):
     return render(request, 'users_temp/profile.html')
 
 
-# AddStore
-def add_store(request):
-    route = request.user
-    if request.method == 'POST':
-        form = StoreForm(request.POST)
-        if form.is_valid():
-            store = form.save(commit=False)
-            store.route = route
-            store.save()
-            messages.info(request, 'Store Created Successfully')
-            return redirect('home')
-    else:
-        form = StoreForm()
-        context = {'form': form, 'route': route}
-    return render(request, 'users_temp/add_store.html', context)
