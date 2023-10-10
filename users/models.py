@@ -16,3 +16,8 @@ class Store(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+# Dashboard Status
+class DashboardStatus(models.Model):
+    is_active = models.BooleanField(default=False)
