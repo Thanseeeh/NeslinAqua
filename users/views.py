@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from .models import DashboardStatus
 from .forms import StoreForm
 
 # Create your views here.
@@ -8,8 +9,12 @@ from .forms import StoreForm
 # Home
 def home(request):
     if 'username' not in  request.session:
-        return redirect('login_user') 
-    return render(request, 'users_temp/index.html')
+        return redirect('login_user')
+    
+    dashboard_status = DashboardStatus.objects.first()
+    context = {'dashboard_status': dashboard_status,}
+    
+    return render(request, 'users_temp/index.html', context)
 
 
 # Payments
