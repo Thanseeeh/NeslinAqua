@@ -8,24 +8,21 @@
 
 <!-- Recent Sales Start -->
 <div class="container-fluid pt-4 px-4">
-    <div class="bg-light vh-100 text-center rounded p-4">
+    <div class="bg-light text-center rounded p-4">
         
         {% if dashboard_status and not dashboard_status.is_active %}
 
-            <div class="d-flex justify-content-center">
-                <div class="col-12 col-sm-8 col-md-6 col-lg-6 col-xl-6">
-                    <form class="bg-light rounded p-4 p-sm-5 my-4 mx-3 shadow" action="{% url 'login_user' %}" method="post">
+            <div class="d-flex justify-content-center mt-5 mb-5">
+                <div class="col-12 col-sm-8 col-md-6 col-lg-6 col-xl-6 mt-5 mb-5">
+                    <h1 class="mt-5">Add Jars</h1>
+                    <form class="bg-light rounded p-4 p-sm-5 my-4 mx-3 shadow mb-5" action="{% url 'home' %}" method="post">
 
                         {% csrf_token %}
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="floatingInput" placeholder="username" name="username">
-                            <label for="floatingInput">Username</label>
+                            {{ trip_form.jars }}
+                            <label for="floatingInput">Number of Jars</label>
                         </div>
-                        <div class="form-floating mb-4">
-                            <input type="password" class="form-control" id="floatingPassword" placeholder="password" name="password">
-                            <label for="floatingPassword">Password</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Login</button>
+                        <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Submit</button>
                     </form>
                 </div>
             </div>

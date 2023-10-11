@@ -4,7 +4,7 @@ from accounts.models import Account
 # Create your models here.
 
 
-# AddStore
+# Add Store
 class Store(models.Model):
     name            = models.CharField(max_length=200, null=True)
     price_for_jar   = models.FloatField()
@@ -21,3 +21,10 @@ class Store(models.Model):
 # Dashboard Status
 class DashboardStatus(models.Model):
     is_active = models.BooleanField(default=False)
+
+
+# Daily Trip
+class Trip(models.Model):
+    jars    = models.CharField(max_length=50, null=True)
+    date    = models.DateTimeField(auto_now_add=True)
+    route   = models.ForeignKey(Account, on_delete=models.CASCADE)

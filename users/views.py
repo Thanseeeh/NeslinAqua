@@ -1,19 +1,36 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import DashboardStatus
-from .forms import StoreForm
+from .forms import StoreForm, TripForm
 
 # Create your views here.
 
 
 # Home
 def home(request):
-    if 'username' not in  request.session:
+    if 'username' not in request.session:
         return redirect('login_user')
-    
+
     dashboard_status = DashboardStatus.objects.first()
-    context = {'dashboard_status': dashboard_status,}
-    
+
+    if request.method == 'POST':
+        trip_form = TripForm(request.POST)
+        if trip_form.is_valid():
+            trip = trip_form.save(commit=False)
+            trip.route = request.user
+            trip.save()
+            dashboard_status.is_active = True
+            dashboard_status.save()
+            return redirect('home')
+
+    else:
+        trip_form = TripForm()
+
+    context = {
+        'dashboard_status': dashboard_status,
+        'trip_form': trip_form,
+    }
+
     return render(request, 'users_temp/index.html', context)
 
 
