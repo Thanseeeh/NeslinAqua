@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
+from django.utils import timezone
 from django.contrib import messages
-from .models import DashboardStatus
-from .forms import StoreForm, TripForm
+from .models import DashboardStatus, Store, Sales
+from .forms import StoreForm, TripForm, SalesForm
 
 # Create your views here.
 
@@ -26,12 +27,23 @@ def home(request):
     else:
         trip_form = TripForm()
 
+    stores = Store.objects.filter(route=request.user)
+
+    # Create a list of dictionaries, each containing store and associated sales records for the current day
+    store_sales = []
+    for store in stores:
+        current_day = timezone.now().date()
+        sales_records = Sales.objects.filter(store=store, date__date=current_day).order_by('-date')
+        store_sales.append({'store': store, 'sales_records': sales_records})
+
     context = {
         'dashboard_status': dashboard_status,
         'trip_form': trip_form,
+        'store_sales': store_sales,  # Pass the structured data to the template
     }
 
     return render(request, 'users_temp/index.html', context)
+
 
 
 # Payments
@@ -59,3 +71,24 @@ def add_store(request):
         form = StoreForm()
         context = {'form': form, 'route': route}
     return render(request, 'users_temp/add_store.html', context)
+
+
+# AddSale
+def add_sale(request, store_id):
+    store = Store.objects.get(pk=store_id)
+    if request.method == 'POST':
+        form = SalesForm(request.POST)
+        if form.is_valid():
+            sale = form.save(commit=False)
+            sale.store = store
+            sale.route = request.user
+            sale.jars = int(sale.jars)
+            sale.amount = sale.jars * store.price_for_jar
+            sale.is_delivered = True
+            sale.save()
+            return redirect('home')
+    else:
+        form = SalesForm()
+
+    context = {'form': form, 'store': store}
+    return render(request, 'users_temp/sale.html', context)

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Store, Trip
+from .models import Store, Trip, Sales
 
 
 class StoreForm(forms.ModelForm):
@@ -17,5 +17,12 @@ class StoreForm(forms.ModelForm):
 class TripForm(forms.ModelForm):
     class Meta:
         model = Trip
+        fields = ['jars']
+        widgets = { 'jars' : forms.NumberInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Number of Jars', 'step': 1})}
+
+
+class SalesForm(forms.ModelForm):
+    class Meta:
+        model = Sales
         fields = ['jars']
         widgets = { 'jars' : forms.NumberInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Number of Jars', 'step': 1})}

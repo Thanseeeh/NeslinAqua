@@ -28,3 +28,13 @@ class Trip(models.Model):
     jars    = models.CharField(max_length=50, null=True)
     date    = models.DateTimeField(auto_now_add=True)
     route   = models.ForeignKey(Account, on_delete=models.CASCADE)
+
+
+# Shop Sales
+class Sales(models.Model):
+    jars    = models.CharField(max_length=50, null=True)
+    store   = models.ForeignKey(Store, on_delete=models.CASCADE)
+    date    = models.DateTimeField(auto_now_add=True)
+    amount  = models.CharField(max_length=200, default=0)
+    route   = models.ForeignKey(Account, on_delete=models.CASCADE)
+    is_delivered = models.BooleanField(default=False)
