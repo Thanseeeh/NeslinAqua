@@ -29,7 +29,6 @@ def home(request):
 
     stores = Store.objects.filter(route=request.user)
 
-    # Create a list of dictionaries, each containing store and associated sales records for the current day
     store_sales = []
     for store in stores:
         current_day = timezone.now().date()
@@ -39,7 +38,7 @@ def home(request):
     context = {
         'dashboard_status': dashboard_status,
         'trip_form': trip_form,
-        'store_sales': store_sales,  # Pass the structured data to the template
+        'store_sales': store_sales,
     }
 
     return render(request, 'users_temp/index.html', context)
