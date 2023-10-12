@@ -46,35 +46,33 @@
                     </thead>
                     <tbody>
                         {% for item in store_sales %}
-    <tr>
-        <td>
-            {% if item.sales_records %}
-                {{ item.store.name }}
-            {% else %}
-                <a href="{% url 'add_sale' item.store.id %}">{{ item.store.name }}</a>
-            {% endif %}
-        </td>
-        <!-- Loop through sales records for this store -->
-        {% for record in item.sales_records %}
-            <td>{{ record.date }}</td>
-            <td>{{ record.jars }}</td>
-            <td>{{ record.amount }}</td>
-            <td>
-                {% if record.is_delivered %}
-                    <input class="form-check-input" type="checkbox" checked disabled>
-                {% else %}
-                    <input class="form-check-input" type="checkbox" disabled>
-                {% endif %}
-            </td>
-        {% empty %}
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        {% endfor %}
-    </tr>
-{% endfor %}
-
+                        <tr>
+                            <td>
+                                {% if item.sales_records %}
+                                    {{ item.store.name }}
+                                {% else %}
+                                    <a href="{% url 'add_sale' item.store.id %}">{{ item.store.name }}</a>
+                                {% endif %}
+                            </td>
+                            {% for record in item.sales_records %}
+                                <td>{{ record.date|date:"F j, Y" }}</td>
+                                <td>{{ record.jars }}</td>
+                                <td>{{ record.amount }}</td>
+                                <td>
+                                    {% if record.is_delivered %}
+                                        <input class="form-check-input" type="checkbox" checked disabled>
+                                    {% else %}
+                                        <input class="form-check-input" type="checkbox" disabled>
+                                    {% endif %}
+                                </td>
+                            {% empty %}
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

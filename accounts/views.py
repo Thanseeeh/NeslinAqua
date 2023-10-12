@@ -3,6 +3,7 @@ from django.shortcuts import render,redirect
 from .forms import Registrationform
 from .models import Account
 from django.contrib.auth.decorators import login_required
+from users.models import DashboardStatus
 
 # Create your views here.
 
@@ -28,6 +29,8 @@ def sign_up(request):
             user.set_password(password)
             user.is_active = True
             user.save()
+
+            DashboardStatus.objects.create(route=user)
             
             return render(request, 'admins_temp/admin-home.html')
         else:
@@ -76,5 +79,11 @@ def login_user(request):
 #Logout
 @login_required(login_url='login_user')
 def logout_user(request):
+    user = request.user
+    if user.is_admin == False:
+        user_dashboard_status = DashboardStatus.objects.get(route=request.user)
+        user_dashboard_status.is_active = False
+        user_dashboard_status.save()
+
     auth.logout(request)
     return redirect('login_user')
