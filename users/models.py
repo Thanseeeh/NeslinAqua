@@ -16,12 +16,6 @@ class Store(models.Model):
 
     def __str__(self):
         return self.name
-    
-
-# Dashboard Status
-class DashboardStatus(models.Model):
-    route = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='dashboard_status')
-    is_active = models.BooleanField(default=False)
 
 
 # Daily Trip

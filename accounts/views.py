@@ -1,9 +1,10 @@
 from django.contrib import messages,auth,sessions
+from django.utils import timezone
 from django.shortcuts import render,redirect
 from .forms import Registrationform
 from .models import Account
 from django.contrib.auth.decorators import login_required
-from users.models import DashboardStatus
+from users.models import Trip
 
 # Create your views here.
 
@@ -29,8 +30,6 @@ def sign_up(request):
             user.set_password(password)
             user.is_active = True
             user.save()
-
-            DashboardStatus.objects.create(route=user)
             
             return render(request, 'admins_temp/admin-home.html')
         else:
@@ -77,10 +76,16 @@ def login_user(request):
 @login_required(login_url='login_user')
 def logout_user(request):
     user = request.user
-    if user.is_admin == False:
-        user_dashboard_status = DashboardStatus.objects.get(route=request.user)
-        user_dashboard_status.is_active = False
-        user_dashboard_status.save()
+
+    if not user.is_admin:
+        today_date = timezone.now().date()
+
+        try:
+            user_trip_status = Trip.objects.get(route=request.user, date=today_date, status='Active')
+            user_trip_status.status = 'Completed'
+            user_trip_status.save()
+        except Trip.DoesNotExist:
+            pass
 
     auth.logout(request)
     return redirect('login_user')

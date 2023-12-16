@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from .models import DashboardStatus, Store, Sales, Trip
+from .models import Store, Sales, Trip
 from .forms import StoreForm, TripForm, SalesForm
 
 # Create your views here.
@@ -14,7 +14,6 @@ def home(request):
         return redirect('login_user')
 
     route = request.user
-    dashboard_status = DashboardStatus.objects.first()
     current_day = timezone.now().date()
 
     # Check if there is an active trip for the current route and day
@@ -59,7 +58,7 @@ def home(request):
                     sales_records = Sales.objects.filter(store=store, route=route, date=current_day).order_by('-date')
                     store_sales.append({'store': store, 'sales_records': sales_records})
                 context = {
-                    'dashboard_status': dashboard_status,
+                    'active_trip': active_trip,
                     'trip_form': TripForm(),
                     'trip_started': new_trip,
                     'store_sales': store_sales,
@@ -70,7 +69,7 @@ def home(request):
         trip_form = TripForm()
 
     context = {
-        'dashboard_status': dashboard_status,
+        'active_trip': active_trip,
         'trip_form': trip_form,
         'trip_started': active_trip,
         'store_sales': [],
