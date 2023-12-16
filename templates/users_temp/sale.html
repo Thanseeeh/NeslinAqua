@@ -92,6 +92,7 @@
                                     <div class="d-flex align-items-center justify-content-between mb-3">
                                         <a href="{% url 'admin_home' %}" class="">
                                             <h4 class="text-primary"><img src="{% static 'img/favicon.png' %}" style="width: 30px">Ameen Distributers</h4>
+                                            <a href="{% url 'edit_store' store.id%}" class="fw-bold" onclick="return confirm('Are you sure you want to delete the Store?')">Edit</a>
                                         </a>
                                     </div>
                                     {{ form.jars }}

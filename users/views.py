@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 from .models import DashboardStatus, Store, Sales, Trip
 from .forms import StoreForm, TripForm, SalesForm
 
@@ -14,12 +15,13 @@ def home(request):
 
     route = request.user
     dashboard_status = DashboardStatus.objects.first()
-    # Check if the route's trip is already started
     current_day = timezone.now().date()
-    trip_started = Trip.objects.filter(route=route, date=current_day).exists()
+
+    # Check if there is an active trip for the current route and day
+    active_trip = Trip.objects.filter(route=route, date=current_day, status='Active').first()
 
     if request.method == 'POST':
-        if trip_started:
+        if active_trip:
             # Handle sale submission
             form = SalesForm(request.POST)
             if form.is_valid():
@@ -32,44 +34,49 @@ def home(request):
                 sale.save()
 
                 # Update jars_sold for the current trip
-                trip = Trip.objects.get(route=route, date=current_day)
-                trip.jars_sold += sale.jars
-                trip.save()
+                active_trip.jars_sold += sale.jars
+                active_trip.save()
 
-                # Check if all jars are sold and log out the route if so
-                if trip.jars_sold >= trip.jars:
+                # Check if all jars are sold and update the status
+                if active_trip.jars_sold >= active_trip.jars:
+                    active_trip.status = 'Completed'
+                    active_trip.save()
                     messages.info(request, 'All jars are sold. Logging out.')
                     return redirect('logout_user')
         else:
             # Handle trip start
             trip_form = TripForm(request.POST)
             if trip_form.is_valid():
-                trip = trip_form.save(commit=False)
-                trip.route = route
-                trip.date = current_day  # Set the date to current_day
-                trip.save()
-                dashboard_status.is_active = True
-                dashboard_status.save()
-                return redirect('home')
+                new_trip = trip_form.save(commit=False)
+                new_trip.route = route
+                new_trip.date = current_day
+                new_trip.status = 'Active'
+                new_trip.save()
+                # Render the store details table when a trip is active
+                stores = Store.objects.filter(route=route)
+                store_sales = []
+                for store in stores:
+                    sales_records = Sales.objects.filter(store=store, route=route, date=current_day).order_by('-date')
+                    store_sales.append({'store': store, 'sales_records': sales_records})
+                context = {
+                    'dashboard_status': dashboard_status,
+                    'trip_form': TripForm(),
+                    'trip_started': new_trip,
+                    'store_sales': store_sales,
+                }
+                return render(request, 'users_temp/index.html', context)
+
     else:
         trip_form = TripForm()
-
-    stores = Store.objects.filter(route=route)
-    store_sales = []
-
-    for store in stores:
-        sales_records = Sales.objects.filter(store=store, route=route, date=current_day).order_by('-date')
-        store_sales.append({'store': store, 'sales_records': sales_records})
 
     context = {
         'dashboard_status': dashboard_status,
         'trip_form': trip_form,
-        'trip_started': trip_started,
-        'store_sales': store_sales,
+        'trip_started': active_trip,
+        'store_sales': [],
     }
 
     return render(request, 'users_temp/index.html', context)
-
 
 # Payments
 def payments(request):
@@ -96,6 +103,12 @@ def add_store(request):
         form = StoreForm()
         context = {'form': form, 'route': route}
     return render(request, 'users_temp/add_store.html', context)
+
+
+# EditStore
+def edit_store(request, store_id):
+    Store.objects.get(pk=store_id).delete()
+    return redirect('home')
 
 
 # AddSale

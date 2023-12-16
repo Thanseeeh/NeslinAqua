@@ -55,11 +55,8 @@ def login_user(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        print(username)
-        print(password)
 
         user=auth.authenticate(username=username,password=password)
-        print(user)
         if user is not None and user.is_superadmin:
             request.session['super_username'] = username
             auth.login(request,user)

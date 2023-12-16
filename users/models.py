@@ -30,6 +30,7 @@ class Trip(models.Model):
     jars_sold = models.PositiveIntegerField(default=0)
     date    = models.DateField(auto_now_add=True)
     route   = models.ForeignKey(Account, on_delete=models.CASCADE)
+    status  = models.CharField(max_length=20, default='Active')
 
 
 # Shop Sales
