@@ -10,7 +10,7 @@
 <div class="container-fluid pt-4 px-4">
     <div class="bg-light text-center rounded p-4">
         
-        {% if active_trip and not active_trip.status %}
+        {% if active_trip.status is None %}
 
             <div class="d-flex justify-content-center mt-5 mb-5">
                 <div class="col-12 col-sm-8 col-md-6 col-lg-6 col-xl-6 mt-5 mb-5">

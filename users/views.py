@@ -63,7 +63,8 @@ def home(request):
                     'trip_started': new_trip,
                     'store_sales': store_sales,
                 }
-                return render(request, 'users_temp/index.html', context)
+                return redirect('home')
+                # return render(request, 'users_temp/index.html', context)
 
     else:
         trip_form = TripForm()
