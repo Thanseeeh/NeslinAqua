@@ -57,6 +57,7 @@ def home(request):
                 for store in stores:
                     sales_records = Sales.objects.filter(store=store, route=route, date=current_day).order_by('-date')
                     store_sales.append({'store': store, 'sales_records': sales_records})
+
                 context = {
                     'active_trip': active_trip,
                     'trip_form': TripForm(),
@@ -64,16 +65,21 @@ def home(request):
                     'store_sales': store_sales,
                 }
                 return redirect('home')
-                # return render(request, 'users_temp/index.html', context)
 
     else:
         trip_form = TripForm()
+    
+    stores = Store.objects.filter(route=route)
+    store_sales = []
+    for store in stores:
+        sales_records = Sales.objects.filter(store=store, route=route, date=current_day).order_by('-date')
+        store_sales.append({'store': store, 'sales_records': sales_records})
 
     context = {
         'active_trip': active_trip,
         'trip_form': trip_form,
         'trip_started': active_trip,
-        'store_sales': [],
+        'store_sales': store_sales,
     }
 
     return render(request, 'users_temp/index.html', context)
