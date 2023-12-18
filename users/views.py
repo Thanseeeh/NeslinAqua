@@ -136,7 +136,7 @@ def add_sale(request, store_id):
 
             # Retrieve the existing trip for the day
             current_day = timezone.now().date()
-            trip, created = Trip.objects.get_or_create(route=route, date=current_day)
+            trip, created = Trip.objects.get_or_create(route=route, date=current_day, status='Active')
 
             # Convert the 'jars' and 'jars_sold' fields to integers
             trip.jars = int(trip.jars) if trip.jars else 0
