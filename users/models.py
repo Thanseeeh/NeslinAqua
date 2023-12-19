@@ -32,6 +32,14 @@ class Sales(models.Model):
     jars    = models.CharField(max_length=50, null=True)
     store   = models.ForeignKey(Store, on_delete=models.CASCADE)
     date    = models.DateField(auto_now_add=True)
-    amount  = models.CharField(max_length=200, default=0)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     route   = models.ForeignKey(Account, on_delete=models.CASCADE)
     is_delivered = models.BooleanField(default=False)
+
+
+# Daily Payments
+class Payments(models.Model):
+    title   = models.CharField(max_length=100, null=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    date    = models.DateField(auto_now_add=True)
+    route   = models.ForeignKey(Account, on_delete=models.CASCADE)

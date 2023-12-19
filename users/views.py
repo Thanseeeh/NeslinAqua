@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
+from django.db.models import Sum
 from django.utils import timezone
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Store, Sales, Trip
+from .models import Store, Sales, Trip, Payments
 from .forms import StoreForm, TripForm, SalesForm
 
 # Create your views here.
@@ -86,6 +87,25 @@ def home(request):
 
 # Payments
 def payments(request):
+    route = request.user
+    current_day = timezone.now().date()
+
+    trip = Trip.objects.filter(route=route, date=current_day, status='Active').first()
+    sales = Sales.objects.filter(route=route, date=current_day)
+    expenses = Payments.objects.filter(route=route, date=current_day)
+
+    total_sales_amount = sales.aggregate(Sum('amount'))['amount__sum'] or 0
+    total_expenses = expenses.aggregate(Sum('amount'))['amount__sum'] or 0
+    total_revenue = total_sales_amount - total_expenses
+
+    context = {
+        'current_jar': trip.jars_sold,
+        'total_jar': trip.jars,
+        'total_sales_amount': total_sales_amount,
+        'expenses' : expenses,
+        'total_expenses' : total_expenses,
+        'total_revenue' : total_revenue,
+    }
     return render(request, 'users_temp/payments.html')
 
 
