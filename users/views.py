@@ -90,7 +90,10 @@ def payments(request):
     route = request.user
     current_day = timezone.now().date()
 
-    trip = Trip.objects.filter(route=route, date=current_day, status='Active').first()
+    trip = Trip.objects.filter(route=route, date=current_day)
+    current_jars = trip.aggregate(Sum('jars_sold'))['jars_sold__sum'] or 0
+    total_jars = trip.aggregate(Sum('jars'))['jars__sum'] or 0
+
     sales = Sales.objects.filter(route=route, date=current_day)
     expenses = Payments.objects.filter(route=route, date=current_day)
 
@@ -99,14 +102,15 @@ def payments(request):
     total_revenue = total_sales_amount - total_expenses
 
     context = {
-        'current_jar': trip.jars_sold,
-        'total_jar': trip.jars,
+        'trip': trip,
+        'current_jars': current_jars,
+        'total_jars': total_jars,
         'total_sales_amount': total_sales_amount,
-        'expenses' : expenses,
-        'total_expenses' : total_expenses,
-        'total_revenue' : total_revenue,
+        'expenses': expenses,
+        'total_expenses': total_expenses,
+        'total_revenue': total_revenue,
     }
-    return render(request, 'users_temp/payments.html')
+    return render(request, 'users_temp/payments.html', context)
 
 
 # Profile

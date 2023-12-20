@@ -20,7 +20,7 @@ class Store(models.Model):
 
 # Daily Trip
 class Trip(models.Model):
-    jars    = models.CharField(max_length=50, null=True)
+    jars    = models.PositiveIntegerField(default=0)
     jars_sold = models.PositiveIntegerField(default=0)
     date    = models.DateField(auto_now_add=True)
     route   = models.ForeignKey(Account, on_delete=models.CASCADE)
