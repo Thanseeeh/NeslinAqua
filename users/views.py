@@ -180,3 +180,8 @@ def add_sale(request, store_id):
     # Render the sale.html page
     context = {'form': form, 'store': store}
     return render(request, 'users_temp/sale.html', context)
+
+
+# Custom 404
+def custom_404(request, exception):
+    return render(request, 'users_temp/404.html', status=404)
