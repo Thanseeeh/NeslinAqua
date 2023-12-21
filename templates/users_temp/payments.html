@@ -60,7 +60,9 @@
                 </div>
             </div>
         {% else %}
-            <p>No data available for the current day.</p>
+            <img src="{% static 'img/svg2-image.png' %}" class="mt-5" style="width: 500px">
+            <h4 class="text-primary text-center mt-5">No data available for the current day</h4>
+            <a href="{% url 'home' %}" class="btn btn-primary py-3 w-50 mb-5 fw-bold">Start Trip</a>
         {% endif %}
 
     </div>
