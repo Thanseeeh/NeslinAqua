@@ -192,7 +192,7 @@ def add_expence(request):
             expence.route = route
             expence.save()
             messages.info(request, 'Expence Added Successfully')
-            return redirect('home')
+            return redirect('payments')
     else:
         form = ExpenceForm()
         context = {'form': form, 'route': route}
