@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Store, Sales, Trip, Payments
-from .forms import StoreForm, TripForm, SalesForm
+from .forms import StoreForm, TripForm, SalesForm, ExpenceForm
 
 # Create your views here.
 
@@ -180,6 +180,23 @@ def add_sale(request, store_id):
     # Render the sale.html page
     context = {'form': form, 'store': store}
     return render(request, 'users_temp/sale.html', context)
+
+
+# AddExpence
+def add_expence(request):
+    route = request.user
+    if request.method == 'POST':
+        form = ExpenceForm(request.POST)
+        if form.is_valid():
+            expence = form.save(commit=False)
+            expence.route = route
+            expence.save()
+            messages.info(request, 'Expence Added Successfully')
+            return redirect('home')
+    else:
+        form = ExpenceForm()
+        context = {'form': form, 'route': route}
+    return render(request, 'users_temp/add_expence.html', context)
 
 
 # Custom 404
