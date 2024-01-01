@@ -11,7 +11,10 @@
     <div class="row bg-light rounded align-items-center justify-content-center mx-0 p-lg-5 p-3">
 
         {% if total_jars is not None and total_jars > 0 %}
-            <a href="{% url 'add_expence' %}" class="fw-bold m-2">Add Expences +</a>
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <a href="{% url 'add_expence' %}" class="fw-bold m-2">Add Expences +</a>
+                <a href="{% url 'add_expence' %}" class="fw-bold m-2">Trip Details</a>
+            </div>
             <div class="col-12 col-lg-6 mb-4">
                 <div class="bg-white rounded d-flex flex-column align-items-center justify-content-between p-4 shadow">
                     <i class="fa fa-beer fa-3x text-primary text-center"></i>

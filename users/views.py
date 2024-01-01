@@ -52,6 +52,7 @@ def home(request):
                 new_trip.date = current_day
                 new_trip.status = 'Active'
                 new_trip.save()
+                remaining_jars = active_trip.jars - active_trip.jars_sold
                 # Render the store details table when a trip is active
                 stores = Store.objects.filter(route=route)
                 store_sales = []
@@ -64,12 +65,14 @@ def home(request):
                     'trip_form': TripForm(),
                     'trip_started': new_trip,
                     'store_sales': store_sales,
+                    'remaining_jars': remaining_jars,
                 }
                 return redirect('home')
 
     else:
         trip_form = TripForm()
     
+    remaining_jars = active_trip.jars - active_trip.jars_sold
     stores = Store.objects.filter(route=route)
     store_sales = []
     for store in stores:
@@ -81,6 +84,7 @@ def home(request):
         'trip_form': trip_form,
         'trip_started': active_trip,
         'store_sales': store_sales,
+        'remaining_jars': remaining_jars,
     }
 
     return render(request, 'users_temp/index.html', context)
