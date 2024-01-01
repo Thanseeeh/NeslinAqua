@@ -206,3 +206,22 @@ def add_expence(request):
 # Custom 404
 def custom_404(request, exception):
     return render(request, 'users_temp/404.html', status=404)
+
+
+# TripDetails
+def trip_details(request):
+    route = request.user
+    current_day = timezone.now().date()
+
+    stores = Store.objects.filter(route=route)
+    store_sales = []
+    for store in stores:
+        sales_records = Sales.objects.filter(store=store, route=route, date=current_day).order_by('-date')
+        store_sales.append({'store': store, 'sales_records': sales_records})
+
+    context = {
+        'stores': stores,
+        'store_sales': store_sales,
+    }
+
+    return render(request, 'users_temp/trip_details.html', context)
