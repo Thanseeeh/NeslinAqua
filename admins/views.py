@@ -20,7 +20,11 @@ def admin_profile(request):
 
 # Admin Routes
 def admin_routes(request):
-    return render(request, 'admins_temp/admin-routes.html')
+    routes = Account.objects.all()
+    context = {
+        'routes': routes,
+    }
+    return render(request, 'admins_temp/admin-routes.html', context)
 
 
 # Admin Users
