@@ -12,10 +12,8 @@
         {% for route in routes %}
             <div class="col-sm-12 col-md-6 col-xl-4">
                 <div class="h-100 bg-white shadow rounded p-4">
-                    <div class="d-flex align-items-center justify-content-center mb-3 mt-3">
-                        <h4 class="mb-0">{{ route.username }}</h4>
-                        <p class="text-success">active</p>
-                    </div>
+                    <h4 class="mt-3 mb-0 text-center">{{ route.username }}</h4>
+                    <p class="text-center text-success"><i class="fas fa-dot-circle "></i> active</p>
                     <div class="d-flex align-items-center border-bottom py-3">
                         <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
                         <div class="w-100 ms-3">
