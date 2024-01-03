@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
+from django.utils import timezone
 from django.contrib import messages
 from accounts.models import Account
 from accounts.forms import Registrationform
+from users.models import Trip
 
 # Create your views here.
 
@@ -20,9 +22,12 @@ def admin_profile(request):
 
 # Admin Routes
 def admin_routes(request):
+    current_day = timezone.now().date()
     routes = Account.objects.all()
+    trip = Trip.objects.filter(date=current_day, status='Active')
     context = {
         'routes': routes,
+        'trip': trip,
     }
     return render(request, 'admins_temp/admin-routes.html', context)
 

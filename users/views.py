@@ -19,6 +19,7 @@ def home(request):
 
     # Check if there is an active trip for the current route and day
     active_trip = Trip.objects.filter(route=route, date=current_day, status='Active').first()
+    remaining_jars = 0
 
     if request.method == 'POST':
         if active_trip:
@@ -31,11 +32,16 @@ def home(request):
                 sale.jars = int(sale.jars)
                 sale.amount = sale.jars * sale.store.price_for_jar
                 sale.is_delivered = True
+
+                remaining_jars = active_trip.jars - active_trip.jars_sold - sale.jars  # Calculate before saving
+
                 sale.save()
 
                 # Update jars_sold for the current trip
                 active_trip.jars_sold += sale.jars
                 active_trip.save()
+
+                remaining_jars = active_trip.jars - active_trip.jars_sold  # Calculate after saving
 
                 # Check if all jars are sold and update the status
                 if active_trip.jars_sold >= active_trip.jars:
@@ -52,7 +58,7 @@ def home(request):
                 new_trip.date = current_day
                 new_trip.status = 'Active'
                 new_trip.save()
-                remaining_jars = active_trip.jars - active_trip.jars_sold
+
                 # Render the store details table when a trip is active
                 stores = Store.objects.filter(route=route)
                 store_sales = []
@@ -65,14 +71,12 @@ def home(request):
                     'trip_form': TripForm(),
                     'trip_started': new_trip,
                     'store_sales': store_sales,
-                    'remaining_jars': remaining_jars,
                 }
                 return redirect('home')
 
     else:
         trip_form = TripForm()
     
-    remaining_jars = active_trip.jars - active_trip.jars_sold
     stores = Store.objects.filter(route=route)
     store_sales = []
     for store in stores:
@@ -88,6 +92,7 @@ def home(request):
     }
 
     return render(request, 'users_temp/index.html', context)
+
 
 # Payments
 def payments(request):
