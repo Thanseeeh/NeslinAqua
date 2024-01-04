@@ -19,7 +19,6 @@ def home(request):
 
     # Check if there is an active trip for the current route and day
     active_trip = Trip.objects.filter(route=route, date=current_day, status='Active').first()
-    remaining_jars = 0
 
     if request.method == 'POST':
         if active_trip:
@@ -32,16 +31,11 @@ def home(request):
                 sale.jars = int(sale.jars)
                 sale.amount = sale.jars * sale.store.price_for_jar
                 sale.is_delivered = True
-
-                remaining_jars = active_trip.jars - active_trip.jars_sold - sale.jars  # Calculate before saving
-
                 sale.save()
 
                 # Update jars_sold for the current trip
                 active_trip.jars_sold += sale.jars
                 active_trip.save()
-
-                remaining_jars = active_trip.jars - active_trip.jars_sold  # Calculate after saving
 
                 # Check if all jars are sold and update the status
                 if active_trip.jars_sold >= active_trip.jars:
@@ -77,6 +71,11 @@ def home(request):
     else:
         trip_form = TripForm()
     
+    if active_trip:
+        remaining_jars = active_trip.jars - active_trip.jars_sold
+    else:
+        remaining_jars = 0
+        
     stores = Store.objects.filter(route=route)
     store_sales = []
     for store in stores:
@@ -92,7 +91,6 @@ def home(request):
     }
 
     return render(request, 'users_temp/index.html', context)
-
 
 # Payments
 def payments(request):

@@ -24,12 +24,14 @@ def admin_profile(request):
 def admin_routes(request):
     current_day = timezone.now().date()
     routes = Account.objects.all()
-    trip = Trip.objects.filter(date=current_day, status='Active')
+    trips = Trip.objects.filter(date=current_day, status='Active')
+
     context = {
         'routes': routes,
-        'trip': trip,
+        'trips': trips,
     }
     return render(request, 'admins_temp/admin-routes.html', context)
+
 
 
 # Admin Users
