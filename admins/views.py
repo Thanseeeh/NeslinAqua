@@ -3,7 +3,8 @@ from django.utils import timezone
 from django.contrib import messages
 from accounts.models import Account
 from accounts.forms import Registrationform
-from users.models import Trip
+from users.models import Trip, Sales, Payments
+from django.db.models import Sum
 
 # Create your views here.
 
@@ -24,14 +25,35 @@ def admin_profile(request):
 def admin_routes(request):
     current_day = timezone.now().date()
     routes = Account.objects.all()
-    trips = Trip.objects.filter(date=current_day, status='Active')
+    trip = Trip.objects.filter(date=current_day, status='Active')
+
+    route_details = []
+
+    for route in routes:
+        trips = Trip.objects.filter(route=route, date=current_day)
+        sales = Sales.objects.filter(route=route, date=current_day)
+        expenses = Payments.objects.filter(route=route, date=current_day)
+
+        total_jars_sold = trips.aggregate(Sum('jars_sold'))['jars_sold__sum'] or 0
+        total_jars = trips.aggregate(Sum('jars'))['jars__sum'] or 0
+        total_sales_amount = sales.aggregate(Sum('amount'))['amount__sum'] or 0
+        total_expenses = expenses.aggregate(Sum('amount'))['amount__sum'] or 0
+        total_revenue = total_sales_amount - total_expenses
+
+        route_details.append({
+            'route': route,
+            'total_jars_sold': total_jars_sold,
+            'total_jars': total_jars,
+            'total_sales_amount': total_sales_amount,
+            'total_expenses': total_expenses,
+            'total_revenue': total_revenue,
+        })
 
     context = {
-        'routes': routes,
-        'trips': trips,
+        'route_details': route_details,
+        'trip': trip,
     }
     return render(request, 'admins_temp/admin-routes.html', context)
-
 
 
 # Admin Users
