@@ -15,7 +15,8 @@ def home(request):
         return redirect('login_user')
 
     route = request.user
-    current_day = timezone.now().date()
+    current_time_utc = timezone.now()
+    current_day = timezone.localtime(current_time_utc).date()
 
     # Check if there is an active trip for the current route and day
     active_trip = Trip.objects.filter(route=route, date=current_day, status='Active').first()
@@ -95,7 +96,8 @@ def home(request):
 # Payments
 def payments(request):
     route = request.user
-    current_day = timezone.now().date()
+    current_time_utc = timezone.now()
+    current_day = timezone.localtime(current_time_utc).date()
 
     trip = Trip.objects.filter(route=route, date=current_day)
     current_jars = trip.aggregate(Sum('jars_sold'))['jars_sold__sum'] or 0
@@ -166,7 +168,8 @@ def add_sale(request, store_id):
             sale.save()
 
             # Retrieve the existing trip for the day
-            current_day = timezone.now().date()
+            current_time_utc = timezone.now()
+            current_day = timezone.localtime(current_time_utc).date()
             trip, created = Trip.objects.get_or_create(route=route, date=current_day, status='Active')
 
             # Convert the 'jars' and 'jars_sold' fields to integers
@@ -214,7 +217,8 @@ def custom_404(request, exception):
 # TripDetails
 def trip_details(request):
     route = request.user
-    current_day = timezone.now().date()
+    current_time_utc = timezone.now()
+    current_day = timezone.localtime(current_time_utc).date()
 
     stores = Store.objects.filter(route=route)
     store_sales = []

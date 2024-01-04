@@ -23,7 +23,8 @@ def admin_profile(request):
 
 # Admin Routes
 def admin_routes(request):
-    current_day = timezone.now().date()
+    current_time_utc = timezone.now()
+    current_day = timezone.localtime(current_time_utc).date()
     routes = Account.objects.all()
     trip = Trip.objects.filter(date=current_day, status='Active')
 

@@ -78,7 +78,8 @@ def logout_user(request):
     user = request.user
 
     if not user.is_admin:
-        today_date = timezone.now().date()
+        current_time_utc = timezone.now()
+        today_date = timezone.localtime(current_time_utc).date()
 
         try:
             user_trip_status = Trip.objects.get(route=request.user, date=today_date, status='Active')
