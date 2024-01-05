@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib import messages
 from accounts.models import Account
 from accounts.forms import Registrationform
-from users.models import Trip, Sales, Payments
+from users.models import Trip, Sales, Payments, Store
 from django.db.models import Sum
 
 # Create your views here.
@@ -55,6 +55,27 @@ def admin_routes(request):
         'trip': trip,
     }
     return render(request, 'admins_temp/admin-routes.html', context)
+
+
+# Route Details
+def route_details(request, route):
+    route = route
+    route_object = Account.objects.filter(id=route).first()
+    current_time_utc = timezone.now()
+    current_day = timezone.localtime(current_time_utc).date()
+
+    stores = Store.objects.filter(route=route)
+    store_sales = []
+    for store in stores:
+        sales_records = Sales.objects.filter(store=store, route=route, date=current_day).order_by('-date')
+        store_sales.append({'store': store, 'sales_records': sales_records})
+
+    context = {
+        'route_object': route_object,
+        'stores': stores,
+        'store_sales': store_sales,
+    }
+    return render(request, 'admins_temp/route_details.html', context)
 
 
 # Admin Users

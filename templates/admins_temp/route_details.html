@@ -1,0 +1,61 @@
+{% extends 'admins_temp/admin-base.html' %}
+
+{% load static %}
+
+{% block title %} Ameen-RouteDetails {% endblock %}
+
+{% block content %} 
+
+<!-- Blank Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row bg-light rounded align-items-center justify-content-center mx-0 p-lg-5 p-3">
+
+        <div class="table-responsive">
+            <h3 class="text-center mb-5 mt-3">{{ route_object }} : Today's Details</h3>
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+                <thead>
+                    <tr class="text-dark">
+                        <th scope="col">Store Name</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Number of Jars</th>
+                        <th scope="col">Total Amount</th>
+                        <th scope="col">Delivered</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in store_sales %}
+                    <tr>
+                        <td>{{ item.store.name }}</td>
+                        {% for record in item.sales_records %}
+                            <td>{{ record.date|date:"F j, Y" }}</td>
+                            <td>{{ record.jars }}</td>
+                            <td>{{ record.amount }}</td>
+                            <td>
+                                {% if record.is_delivered %}
+                                    <input class="form-check-input" type="checkbox" checked disabled>
+                                {% else %}
+                                    <input class="form-check-input" type="checkbox" disabled>
+                                {% endif %}
+                            </td>
+                        {% empty %}
+                            <td class="text-danger">Not Delivered</td>
+                            <td class="text-danger">Not Delivered</td>
+                            <td class="text-danger">Not Delivered</td>
+                            <td><i class="fas fa-times text-danger"></i></td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+<!-- Blank End -->
+
+<script>
+    var mylink=document.getElementById("payments")
+    mylink.classList.add("active")
+</script>
+
+{% endblock %}

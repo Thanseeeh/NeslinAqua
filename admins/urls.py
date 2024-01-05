@@ -9,5 +9,6 @@ urlpatterns = [
     path('admin-transactions/', views.admin_transactions, name='admin_transactions'),
     path('block_user/<int:user_id>/', views.block_user, name='block_user'),
     path('unblock_user/<int:user_id>/', views.unblock_user, name='unblock_user'),
-    path('edit-user/<int:user_id>/', views.edit_user, name='edit_user')
+    path('edit-user/<int:user_id>/', views.edit_user, name='edit_user'),
+    path('route-details/<int:route>/', views.route_details, name='route_details'),
 ]
