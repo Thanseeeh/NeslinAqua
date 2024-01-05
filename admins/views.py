@@ -69,11 +69,14 @@ def route_details(request, route):
     for store in stores:
         sales_records = Sales.objects.filter(store=store, route=route, date=current_day).order_by('-date')
         store_sales.append({'store': store, 'sales_records': sales_records})
+    
+    expences = Payments.objects.filter(route=route, date=current_day)
 
     context = {
         'route_object': route_object,
         'stores': stores,
         'store_sales': store_sales,
+        'expences': expences,
     }
     return render(request, 'admins_temp/route_details.html', context)
 
