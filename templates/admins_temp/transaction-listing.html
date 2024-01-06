@@ -1,0 +1,55 @@
+{% extends 'admins_temp/admin-base.html' %}
+
+{% load static %}
+
+{% block title %} Ameen-TransactionListing {% endblock %}
+
+{% block content %} 
+
+<!-- Blank Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row bg-light rounded align-items-center justify-content-center mx-0">
+      <div class="main-panel mt-5 mb-5">
+        <div class="content-wrapper mb-5">
+            <h2 class="mx-md-5 mb-4">Transaction Listing</h2>
+            <div class="col-sm-12 justify-content-center">
+                {% for transaction in transactions_page %}
+                <div class="bg-white rounded shadow p-4 mb-3 mx-md-5 text-center">
+                    <h6>{{ transaction.store.name }} Payed ₹{{ transaction.amount|floatformat:0 }} for {{ transaction.jars }} Jars on {{ transaction.date|date:"F j" }}</h6>
+                </div>
+                {% endfor %}
+            
+                <div class="text-center">
+                    <span class="step-links">
+                        {% if transactions_page.has_previous %}
+                            <a href="?page=1">&laquo; first</a>
+                            <a href="?page={{ transactions_page.previous_page_number }}">previous</a>
+                        {% endif %}
+            
+                        <span class="current">
+                            Page {{ transactions_page.number }} of {{ transactions_page.paginator.num_pages }}.
+                        </span>
+            
+                        {% if transactions_page.has_next %}
+                            <a href="?page={{ transactions_page.next_page_number }}">next</a>
+                            <a href="?page={{ transactions_page.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                </nav>
+            </div>            
+        </div>       
+      </div>
+    </div>
+  </div>
+<!-- Blank End -->
+
+{% endblock %}

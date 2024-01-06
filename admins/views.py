@@ -5,6 +5,7 @@ from accounts.models import Account
 from accounts.forms import Registrationform
 from users.models import Trip, Sales, Payments, Store
 from django.db.models import Sum
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 
@@ -138,10 +139,23 @@ def edit_user(request, user_id):
     return render(request, 'admins_temp/edit-user.html', context)
 
 
-# Transactions Listing
+# Transaction Listing
 def transaction_listing(request):
     transactions = Sales.objects.all().order_by('-date')
+
+    transactions_per_page = 10
+    page = request.GET.get('page', 1)
+    paginator = Paginator(transactions, transactions_per_page)
+
+    try:
+        transactions_page = paginator.page(page)
+    except PageNotAnInteger:
+        transactions_page = paginator.page(1)
+    except EmptyPage:
+        transactions_page = paginator.page(paginator.num_pages)
+
     context = {
-        'transactions': transactions,
+        'transactions_page': transactions_page,
     }
+
     return render(request, 'admins_temp/transaction-listing.html', context)
