@@ -19,32 +19,25 @@
                 </div>
                 {% endfor %}
             
-                <div class="text-center">
+                <div class="d-flex justify-content-center">
                     <span class="step-links">
-                        {% if transactions_page.has_previous %}
-                            <a href="?page=1">&laquo; first</a>
-                            <a href="?page={{ transactions_page.previous_page_number }}">previous</a>
-                        {% endif %}
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                            {% if transactions_page.has_previous %}
+                                <li class="page-item"><a class="page-link" href="?page=1">&laquo; First</a></li>
+                                <li class="page-item"><a class="page-link" href="?page={{ transactions_page.previous_page_number }}">previous</a></li>
+                            {% endif %}
             
-                        <span class="current">
-                            Page {{ transactions_page.number }} of {{ transactions_page.paginator.num_pages }}.
-                        </span>
+                            <span class="current">
+                                <li class="page-item"><li class="page-link bg-primary text-white" href="#">{{ transactions_page.number }}</li></li>
+                            </span>
             
-                        {% if transactions_page.has_next %}
-                            <a href="?page={{ transactions_page.next_page_number }}">next</a>
-                            <a href="?page={{ transactions_page.paginator.num_pages }}">last &raquo;</a>
-                        {% endif %}
+                            {% if transactions_page.has_next %}
+                                <li class="page-item"><a class="page-link" href="?page={{ transactions_page.next_page_number }}">Next</a></li>
+                                <li class="page-item"><a class="page-link" href="?page={{ transactions_page.paginator.num_pages }}">last &raquo;</a></li>
+                            {% endif %}
                     </span>
                 </div>
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                    </ul>
-                </nav>
             </div>            
         </div>       
       </div>
