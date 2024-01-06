@@ -13,21 +13,11 @@
         <div class="content-wrapper mb-5">
             <h2 class="mx-md-5 mb-4">Transactions</h2>
             <div class="col-sm-12 justify-content-center">
+                {% for sale in sales %}
                 <div class="bg-white rounded shadow p-4 mb-3 mx-md-5 text-center">
-                    <h6>thanseeh payed 1000</h6>
+                    <h6>{{ sale.store.name }} Payed ₹{{ sale.amount|floatformat:0 }} for {{ sale.jars }} Jars on {{ sale.date|date:"F j" }}</h6>
                 </div>
-                <div class="bg-white rounded shadow p-4 mb-3 mx-md-5 text-center">
-                    <h6>aswin payed 1000</h6>
-                </div>
-                <div class="bg-white rounded shadow p-4 mb-3 mx-md-5 text-center">
-                    <h6>thanseeh payed 1000</h6>
-                </div>
-                <div class="bg-white rounded shadow p-4 mb-3 mx-md-5 text-center">
-                    <h6>aswin payed 1000</h6>
-                </div>
-                <div class="bg-white rounded shadow p-4 mb-3 mx-md-5 text-center">
-                    <h6>aswin payed 1000</h6>
-                </div>
+                {% endfor %}
                 <div class="text-end mx-md-5">
                     <a href="" class="text-primary">view all</a>
                 </div>

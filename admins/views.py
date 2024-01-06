@@ -95,7 +95,11 @@ def admin_users(request):
 
 # Admin Transactions
 def admin_transactions(request):
-    return render(request, 'admins_temp/admin-transactions.html')
+    sales = Sales.objects.all().order_by('-date')[:5]
+    context = {
+        'sales': sales,
+    }
+    return render(request, 'admins_temp/admin-transactions.html', context)
 
 
 # Block user
@@ -132,3 +136,12 @@ def edit_user(request, user_id):
 
     context = {'user': user, 'form': form}
     return render(request, 'admins_temp/edit-user.html', context)
+
+
+# Transactions Listing
+def transaction_listing(request):
+    transactions = Sales.objects.all().order_by('-date')
+    context = {
+        'transactions': transactions,
+    }
+    return render(request, 'admins_temp/transaction-listing.html', context)
