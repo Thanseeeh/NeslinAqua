@@ -99,8 +99,12 @@ def admin_users(request):
 # Admin Transactions
 def admin_transactions(request):
     sales = Sales.objects.all().order_by('-date')[:5]
+    current_month = datetime.now().strftime('%B')
+    months = list(calendar.month_name)[1:]
     context = {
         'sales': sales,
+        'current_month': current_month,
+        'months': months,
     }
     return render(request, 'admins_temp/admin-transactions.html', context)
 
@@ -149,10 +153,6 @@ def transaction_listing(request):
     page = request.GET.get('page', 1)
     paginator = Paginator(transactions, transactions_per_page)
 
-    current_month = datetime.now().strftime('%B')
-    months = list(calendar.month_name)[1:]
-    print(current_month)
-
     try:
         transactions_page = paginator.page(page)
     except PageNotAnInteger:
@@ -162,8 +162,6 @@ def transaction_listing(request):
 
     context = {
         'transactions_page': transactions_page,
-        'current_month': current_month,
-        'months': months,
     }
 
     return render(request, 'admins_temp/transaction-listing.html', context)
