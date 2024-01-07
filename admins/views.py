@@ -6,6 +6,8 @@ from accounts.forms import Registrationform
 from users.models import Trip, Sales, Payments, Store
 from django.db.models import Sum
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import calendar
+from datetime import datetime
 
 # Create your views here.
 
@@ -147,6 +149,10 @@ def transaction_listing(request):
     page = request.GET.get('page', 1)
     paginator = Paginator(transactions, transactions_per_page)
 
+    current_month = datetime.now().strftime('%B')
+    months = list(calendar.month_name)[1:]
+    print(current_month)
+
     try:
         transactions_page = paginator.page(page)
     except PageNotAnInteger:
@@ -156,6 +162,8 @@ def transaction_listing(request):
 
     context = {
         'transactions_page': transactions_page,
+        'current_month': current_month,
+        'months': months,
     }
 
     return render(request, 'admins_temp/transaction-listing.html', context)
