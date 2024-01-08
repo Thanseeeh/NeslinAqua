@@ -101,10 +101,12 @@ def admin_transactions(request):
     sales = Sales.objects.all().order_by('-date')[:5]
     current_month = datetime.now().strftime('%B')
     months = list(calendar.month_name)[1:]
+    routes = Account.objects.all()
     context = {
         'sales': sales,
         'current_month': current_month,
         'months': months,
+        'routes': routes,
     }
     return render(request, 'admins_temp/admin-transactions.html', context)
 
