@@ -10,7 +10,7 @@
 <div class="container-fluid pt-4 px-4">
     <div class="row bg-light rounded align-items-center justify-content-center mx-0">
       <div class="main-panel mt-5 mb-5">
-        <div class="content-wrapper mb-5">
+        <div id="statisticsContainer" class="content-wrapper mb-5">
             <h2 class="mx-md-5 mb-4">Transactions</h2>
             <div class="col-sm-12 justify-content-center">
                 {% for sale in sales %}
@@ -28,11 +28,27 @@
                 <div>
                     <h2 id="currentMonthDisplay" class="mx-md-5 mb-4">{{ current_month }} Statistics</h2>
                 </div>
-                <select id="monthDropdown" class="form-select mx-md-5 w-25 mb-5" onchange="changeMonth(this)">
-                    {% for month in months %}
-                        <option value="{{ month }}" {% if month == current_month %}selected{% endif %}>{{ month }}</option>
-                    {% endfor %}
-                </select>
+                <form method="GET" action="{% url 'admin_transactions' %}" class="mb-3">
+                    <div class="row justify-content-center">
+                        <div class="col-md-3">
+                            <select name="selected_year" class="form-select">
+                                {% for year in available_years %}
+                                    <option value="{{ year }}" {% if selected_year == year %}selected{% endif %}>{{ year }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="selected_month" class="form-select">
+                                {% for month in months %}
+                                    <option value="{{ month }}" {% if selected_month == month %}selected{% endif %}>{{ month }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </div>
+                </form>
             </div>                        
             <div class="row justify-content-center mx-md-5">
                 <div class="col-sm-12 col-md-6 col-xl-4 mb-4">
@@ -113,11 +129,6 @@
     </div>
   </div>
 <!-- Blank End -->
-
-<script>
-    var mylink=document.getElementById("admin_transactions")
-    mylink.classList.add("active")
-</script>
 
 <script>
     var mylink = document.getElementById("admin_transactions");

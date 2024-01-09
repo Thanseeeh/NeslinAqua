@@ -8,6 +8,7 @@ from django.db.models import Sum
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import calendar
 from datetime import datetime
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -98,17 +99,40 @@ def admin_users(request):
 
 # Admin Transactions
 def admin_transactions(request):
+    # Get the latest 5 sales
     sales = Sales.objects.all().order_by('-date')[:5]
-    current_month = datetime.now().strftime('%B')
-    this_month = datetime.now().strftime('%m')
-    this_year = datetime.now().strftime('%Y')
+
+    # Get distinct years from the Sales table
+    available_years_query = Sales.objects.dates('date', 'year').order_by('-date__year').distinct()
+
+    # Extract only the year from each date in the QuerySet
+    available_years = [year.year for year in available_years_query]
+
+    # Default values for the current month
+    selected_year = request.GET.get('selected_year', datetime.now().year)
+    selected_month = request.GET.get('selected_month', datetime.now().strftime('%B').lower())
+
+    # Map month names to their corresponding numbers (using lowercase keys)
+    month_dict = {v.lower(): k for k, v in enumerate(calendar.month_name) if v}
+
+    # Convert month name to number
+    selected_month_number = month_dict[selected_month.lower()]
+
     months = list(calendar.month_name)[1:]
     routes = Account.objects.all()
     route_details = []
 
     for route in routes:
-        sales = Sales.objects.filter(route=route, date__month=this_month, date__year=this_year)
-        expenses = Payments.objects.filter(route=route, date__month=this_month, date__year=this_year)
+        sales = Sales.objects.filter(
+            route=route,
+            date__month=selected_month_number,
+            date__year=selected_year
+        )
+        expenses = Payments.objects.filter(
+            route=route,
+            date__month=selected_month_number,
+            date__year=selected_year
+        )
 
         total_sales_amount = sales.aggregate(Sum('amount'))['amount__sum'] or 0
         total_expenses = expenses.aggregate(Sum('amount'))['amount__sum'] or 0
@@ -123,9 +147,12 @@ def admin_transactions(request):
 
     context = {
         'sales': sales,
-        'current_month': current_month,
+        'current_month': selected_month.capitalize(),
         'months': months,
         'route_details': route_details,
+        'available_years': available_years,
+        'selected_year': int(selected_year),
+        'selected_month': selected_month,
     }
     return render(request, 'admins_temp/admin-transactions.html', context)
 
