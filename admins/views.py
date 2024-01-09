@@ -99,8 +99,7 @@ def admin_users(request):
 
 # Admin Transactions
 def admin_transactions(request):
-    # Get the latest 5 sales
-    sales = Sales.objects.all().order_by('-date')[:5]
+    transactions = Sales.objects.all().order_by('-date')[:5]
 
     # Get distinct years from the Sales table
     available_years_query = Sales.objects.dates('date', 'year').order_by('-date__year').distinct()
@@ -145,14 +144,25 @@ def admin_transactions(request):
             'total_revenue': total_revenue,
         })
 
+    summery = []
+    summery_income = Sales.objects.filter(date__month=selected_month_number, date__year=selected_year)
+    summery_exenses = Payments.objects.filter(date__month=selected_month_number, date__year=selected_year)
+
+    total_summery_income = summery_income.aggregate(Sum('amount'))['amount__sum'] or 0
+    total_summery_exenses = summery_exenses.aggregate(Sum('amount'))['amount__sum'] or 0
+    total_summery_net_income = total_summery_income - total_summery_exenses
+
     context = {
-        'sales': sales,
+        'transactions': transactions,
         'current_month': selected_month.capitalize(),
         'months': months,
         'route_details': route_details,
         'available_years': available_years,
         'selected_year': int(selected_year),
         'selected_month': selected_month,
+        'total_summery_income': total_summery_income,
+        'total_summery_exenses': total_summery_exenses,
+        'total_summery_net_income': total_summery_net_income,
     }
     return render(request, 'admins_temp/admin-transactions.html', context)
 
