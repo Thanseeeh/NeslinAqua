@@ -15,9 +15,48 @@ from django.http import JsonResponse
 
 # Admin Home
 def admin_home(request):
-    if 'super_username' not in  request.session:
+    if 'super_username' not in request.session:
         return redirect('login_user') 
-    return render(request, 'admins_temp/admin-home.html')
+    
+    sale = Sales.objects.all()
+    expence = Payments.objects.all()
+
+    total_sale = sale.aggregate(Sum('amount'))['amount__sum'] or 0
+    total_expence = expence.aggregate(Sum('amount'))['amount__sum'] or 0
+    total_revenue = total_sale - total_expence
+
+    # Get distinct years from the Sales table
+    available_years_query = Sales.objects.dates('date', 'year').order_by('-date__year').distinct()
+    # Extract only the year from each date in the QuerySet
+    available_years = [year.year for year in available_years_query]
+    
+    yearly_data = []
+    for year in available_years:
+        sales = Sales.objects.filter(
+            date__year=year
+        )
+        expenses = Payments.objects.filter(
+            date__year=year
+        )
+
+        total_sales_amount = sales.aggregate(Sum('amount'))['amount__sum'] or 0
+        total_expenses = expenses.aggregate(Sum('amount'))['amount__sum'] or 0
+        total_revenue = total_sales_amount - total_expenses
+
+        yearly_data.append({
+            'year': year,
+            'total_sales_amount': total_sales_amount,
+            'total_expenses': total_expenses,
+            'total_revenue': total_revenue,
+        })
+
+    context = {
+        'total_sale': total_sale,
+        'total_expence': total_expence,
+        'total_revenue': total_revenue,
+        'yearly_data': yearly_data,
+    }
+    return render(request, 'admins_temp/admin-home.html', context)
 
 
 # Admin Profile
