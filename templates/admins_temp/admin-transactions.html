@@ -38,12 +38,12 @@
                 <div class="col-sm-12 col-md-6 col-xl-4 mb-4">
                     <div class="h-100 bg-white shadow rounded p-4">
                         <h4 class="mt-3 mb-0 text-start text-decoration-underline">Income</h4>
-                        {% for route in routes %}
+                        {% for route_detail in route_details %}
                             <div class="d-flex align-items-center py-3">
                                 <div class="w-100 ms-3">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-3">{{ route.username}}</h6>
-                                        <small>₹ 23424323</small>
+                                        <h6 class="mb-3">{{ route_detail.route.username}}</h6>
+                                        <small>₹ {{ route_detail.total_sales_amount }}</small>
                                     </div>
                                 </div>
                             </div>

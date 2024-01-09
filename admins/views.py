@@ -100,13 +100,32 @@ def admin_users(request):
 def admin_transactions(request):
     sales = Sales.objects.all().order_by('-date')[:5]
     current_month = datetime.now().strftime('%B')
+    this_month = datetime.now().strftime('%m')
+    this_year = datetime.now().strftime('%Y')
     months = list(calendar.month_name)[1:]
     routes = Account.objects.all()
+    route_details = []
+
+    for route in routes:
+        sales = Sales.objects.filter(route=route, date__month=this_month, date__year=this_year)
+        expenses = Payments.objects.filter(route=route, date__month=this_month, date__year=this_year)
+
+        total_sales_amount = sales.aggregate(Sum('amount'))['amount__sum'] or 0
+        total_expenses = expenses.aggregate(Sum('amount'))['amount__sum'] or 0
+        total_revenue = total_sales_amount - total_expenses
+
+        route_details.append({
+            'route': route,
+            'total_sales_amount': total_sales_amount,
+            'total_expenses': total_expenses,
+            'total_revenue': total_revenue,
+        })
+
     context = {
         'sales': sales,
         'current_month': current_month,
         'months': months,
-        'routes': routes,
+        'route_details': route_details,
     }
     return render(request, 'admins_temp/admin-transactions.html', context)
 
