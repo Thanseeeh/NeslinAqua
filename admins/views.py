@@ -50,12 +50,25 @@ def admin_home(request):
             'total_revenue': total_revenue,
         })
 
+    current_time_utc = timezone.now()
+    current_day = timezone.localtime(current_time_utc).date()
+    today_sale = Sales.objects.filter(date=current_day)
+    today_expence = Payments.objects.filter(date=current_day)
+
+    today_sales_amount = today_sale.aggregate(Sum('amount'))['amount__sum'] or 0
+    today_expenses = today_expence.aggregate(Sum('amount'))['amount__sum'] or 0
+    today_revenue = today_sales_amount - today_expenses
+
     context = {
         'total_sale': total_sale,
         'total_expence': total_expence,
         'total_revenue': total_revenue,
         'yearly_data': yearly_data,
+        'today_sales_amount': today_sales_amount,
+        'today_expenses': today_expenses,
+        'today_revenue': today_revenue,
     }
+    print(today_sales_amount)
     return render(request, 'admins_temp/admin-home.html', context)
 
 

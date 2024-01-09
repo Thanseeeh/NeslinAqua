@@ -55,15 +55,18 @@
               </div>
             </div>
         </div>
-        <div class="col-sm-12 col-xl-6">
-            <div class="bg-light text-center rounded p-4">
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h6 class="mb-0">Salse & Revenue</h6>
-                    <a href="">Show All</a>
+        <div class="col-md-8 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex flex-row justify-content-between">
+                  <h4 class="card-title mb-1">Today's Stats</h4>
                 </div>
-                <canvas id="salse-revenue"></canvas>
+                <div style="height: 400px;">
+                  <canvas id="myChart2" style="margin-left: 30%"></canvas>
+                </div>
+              </div>
             </div>
-        </div>
+          </div>
     </div>
 </div>
 <!-- Sales Chart End -->
@@ -303,6 +306,46 @@
             }
         }
     });
+</script>
+
+<script>
+    var config2 = {
+      type: 'polarArea',
+      data: {
+        labels: ["Today's Income", "Today's Expenses", "Today's Revenue"],
+        datasets: [{
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+          ],
+          borderColor: [
+            'rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+          ],
+          borderWidth: 1,
+          data: [
+            {{ today_sales_amount }},
+            {{ today_expenses }},
+            {{ today_revenue }},
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: "Today's Income, Expenses, and Revenue"
+        }
+      }
+    };
+  
+    var ctx2 = document.getElementById('myChart2').getContext('2d');
+    var myChart2 = new Chart(ctx2, config2);
 </script>
 
 {% endblock %}
