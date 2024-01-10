@@ -68,7 +68,6 @@ def admin_home(request):
         'today_expenses': today_expenses,
         'today_revenue': today_revenue,
     }
-    print(today_sales_amount)
     return render(request, 'admins_temp/admin-home.html', context)
 
 
