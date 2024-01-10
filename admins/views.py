@@ -59,6 +59,9 @@ def admin_home(request):
     today_expenses = today_expence.aggregate(Sum('amount'))['amount__sum'] or 0
     today_revenue = today_sales_amount - today_expenses
 
+    routes = Account.objects.all()
+    trips = Trip.objects.filter(date=current_day, status='Active')
+    
     context = {
         'total_sale': total_sale,
         'total_expence': total_expence,
@@ -67,6 +70,8 @@ def admin_home(request):
         'today_sales_amount': today_sales_amount,
         'today_expenses': today_expenses,
         'today_revenue': today_revenue,
+        'routes': routes,
+        'trips': trips,
     }
     return render(request, 'admins_temp/admin-home.html', context)
 
