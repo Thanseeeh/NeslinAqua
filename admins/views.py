@@ -61,7 +61,21 @@ def admin_home(request):
 
     routes = Account.objects.all()
     trips = Trip.objects.filter(date=current_day, status='Active')
-    
+
+    stores_details = []
+    for route in routes:
+        stores = Store.objects.filter(route=route)
+        route_sale = Sales.objects.filter(route=route)
+        jars_count = route_sale.aggregate(Sum('jars'))['jars__sum'] or 0
+        route_revune = route_sale.aggregate(Sum('amount'))['amount__sum'] or 0
+
+        stores_details.append({
+            'route': route,
+            'store_count': stores.count(),
+            'jars_count': jars_count,
+            'route_revune': route_revune,
+        })
+
     context = {
         'total_sale': total_sale,
         'total_expence': total_expence,
@@ -72,6 +86,7 @@ def admin_home(request):
         'today_revenue': today_revenue,
         'routes': routes,
         'trips': trips,
+        'stores_details': stores_details,
     }
     return render(request, 'admins_temp/admin-home.html', context)
 
