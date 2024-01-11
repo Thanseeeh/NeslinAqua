@@ -11,4 +11,5 @@ urlpatterns = [
     path('add-sale/<int:store_id>/', views.add_sale, name='add_sale'),
     path('add-expence/', views.add_expence, name='add_expence'),
     path('trip-details/', views.trip_details, name='trip_details'),
+    path('old-balance-confirmation/<int:store_id>/', views.old_balance_confirmation, name='old_balance_confirmation'),
 ]

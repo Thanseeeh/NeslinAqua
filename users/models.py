@@ -13,6 +13,7 @@ class Store(models.Model):
     route           = models.ForeignKey(Account, on_delete=models.CASCADE)
     is_active       = models.BooleanField(default=True)
     created_date    = models.DateField(auto_now_add=True)
+    old_balance     = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name

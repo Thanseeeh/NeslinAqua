@@ -10,63 +10,25 @@
 <div class="container-fluid pt-4 px-4">
     <div class="row bg-light rounded align-items-center justify-content-center mx-0 p-lg-5 p-3">
 
-        {% if total_jars is not None and total_jars > 0 %}
-            <div class="d-flex align-items-center justify-content-between mb-4">
-                <a href="{% url 'add_expence' %}" class="fw-bold m-2">Add Expences +</a>
-                <a href="{% url 'trip_details' %}" class="fw-bold m-2">Trip Details</a>
-            </div>
-            <div class="col-12 col-lg-6 mb-4">
-                <div class="bg-white rounded d-flex flex-column align-items-center justify-content-between p-4 shadow">
-                    <i class="fa fa-beer fa-3x text-primary text-center"></i>
-                    <div class="mt-3">
-                        <p class="mb-2">Total Jars</p>
-                        <h6 class="mb-0 text-center">{{ current_jars }} / {{ total_jars }} </h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-lg-6 mb-4">
-                <div class="bg-white rounded d-flex flex-column align-items-center justify-content-between p-4 shadow">
-                    <i class="fa fa-chart-bar fa-3x text-primary"></i>
-                    <div class="mt-3">
-                        <p class="mb-2">Total Sale</p>
-                        <h6 class="mb-0 text-center"> ₹{{ total_sales_amount }} </h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-lg-6 mb-4">
-                <div class="bg-white rounded d-flex flex-column align-items-center justify-content-between p-4 shadow">
-                    <i class="fa fa-chart-area fa-3x text-primary"></i>
-                    <div class="mt-3">
-                        <p class="mb-2">Today Expences</p>
-                        {% for expence in expenses %}
-                            <h6 class="mb-0 text-center">{{ expence.title }}: ₹{{expence.amount}} </h6>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-lg-6 mb-4">
-                <div class="bg-white rounded d-flex flex-column align-items-center justify-content-between p-4 shadow">
-                    <i class="fa fa-chart-line fa-3x text-primary"></i>
-                    <div class="mt-3">
-                        <p class="mb-2">Total Expences</p>
-                        <h6 class="mb-0 text-center"> ₹{{ total_expenses }} </h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-lg-12 mb-4">
-                <div class="bg-white rounded d-flex flex-column align-items-center justify-content-between p-4 shadow">
-                    <i class="fa fa-chart-pie fa-3x text-primary"></i>
-                    <div class="mt-3">
-                        <p class="mb-2">Total Net Income</p>
-                        <h6 class="mb-0 text-center"> ₹{{ total_revenue }} </h6>
-                    </div>
-                </div>
-            </div>
-        {% else %}
-            <img src="{% static 'img/svg2-image.png' %}" class="mt-5" style="width: 500px">
-            <h4 class="text-primary text-center mt-5">No data available for the current day</h4>
-            <a href="{% url 'home' %}" class="btn btn-primary py-3 w-50 mb-5 fw-bold">Start Trip</a>
-        {% endif %}
+        <div class="table-responsive">
+            <h3 class="text-center mb-5 mt-3">Old Balance Details</h3>
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+                <thead>
+                    <tr class="text-dark">
+                        <th scope="col">Store Name</th>
+                        <th scope="col">Old Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for store in stores %}
+                    <tr>
+                        <td><a href="{% url 'old_balance_confirmation' store.id %}">{{ store.name }}</a></td>
+                        <td>₹ {{ store.old_balance }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
     </div>
 </div>

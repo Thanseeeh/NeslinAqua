@@ -124,7 +124,12 @@ def payments(request):
 
 # Old Balance
 def old_balance(request):
-    return render(request, 'users_temp/old_balance.html')
+    route = request.user
+    stores = Store.objects.filter(route=route)
+    context = {
+        'stores': stores,
+    }
+    return render(request, 'users_temp/old_balance.html', context)
 
 
 # Profile
@@ -237,3 +242,12 @@ def trip_details(request):
     }
 
     return render(request, 'users_temp/trip_details.html', context)
+
+
+# Old Balance Confirmation
+def old_balance_confirmation(request, store_id):
+    store = store_id
+    context = {
+        'store': store,
+    }
+    return render(request, 'users_temp/old_balance_confirmation.html', context)
