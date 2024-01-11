@@ -122,6 +122,11 @@ def payments(request):
     return render(request, 'users_temp/payments.html', context)
 
 
+# Old Balance
+def old_balance(request):
+    return render(request, 'users_temp/old_balance.html')
+
+
 # Profile
 def profile(request):
     return render(request, 'users_temp/profile.html')
