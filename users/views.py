@@ -251,3 +251,8 @@ def old_balance_confirmation(request, store_id):
         'store': store,
     }
     return render(request, 'users_temp/old_balance_confirmation.html', context)
+
+
+# Pending OldBalance
+def pending_old_balance(request, store_id):
+    return render(request, 'users_temp/edit_old_balance.html')
