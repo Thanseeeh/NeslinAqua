@@ -12,4 +12,6 @@ urlpatterns = [
     path('add-expence/', views.add_expence, name='add_expence'),
     path('trip-details/', views.trip_details, name='trip_details'),
     path('old-balance-confirmation/<int:store_id>/', views.old_balance_confirmation, name='old_balance_confirmation'),
+    path('pending-old-balance/<int:store_id>/', views.pending_old_balance, name='pending_old_balance'),
+    path('received-old-balance/<int:store_id>/', views.received_old_balance, name='received_old_balance'),
 ]

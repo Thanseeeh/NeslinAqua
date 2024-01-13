@@ -95,16 +95,9 @@
                                         </a>
                                     </div>
                                     <small class="text-danger">*if store didn't payed full amount</small>
-                                    <a href="" class="btn btn-primary py-3 w-100 mb-4 fw-bold">Pending Amount</a>
+                                    <a href="{% url 'pending_old_balance' store.id %}" class="btn btn-primary py-3 w-100 mb-4 fw-bold">Pending Amount</a>
                                     <small class="text-success">*if old balance is cleared</small>
-                                    <a href="" class="btn btn-primary py-3 w-100 mb-4 fw-bold">Received Amount</a>
-                                </div>
-                                <div class="form-group" style="color: red; text-align: center">
-                                    {% for message in messages %}
-                                    <div class="form-controls bg-alert " role="alert">
-                                        {{ message }}
-                                    </div>
-                                    {% endfor %}
+                                    <a href="{% url 'received_old_balance' store.id %}" class="btn btn-primary py-3 w-100 mb-4 fw-bold">Received Amount</a>
                                 </div>
                             </div>
                         </div>

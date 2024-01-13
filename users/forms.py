@@ -3,6 +3,8 @@ from .models import Store, Trip, Sales, Payments
 
 
 class StoreForm(forms.ModelForm):
+    old_balance = forms.DecimalField(widget=forms.HiddenInput(), required=False)
+    
     class Meta:
         model = Store
         fields = ['name', 'price_for_jar', 'stand', 'dispencer']

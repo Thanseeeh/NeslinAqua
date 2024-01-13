@@ -246,7 +246,7 @@ def trip_details(request):
 
 # Old Balance Confirmation
 def old_balance_confirmation(request, store_id):
-    store = store_id
+    store = Store.objects.get(id=store_id)
     context = {
         'store': store,
     }
@@ -255,4 +255,39 @@ def old_balance_confirmation(request, store_id):
 
 # Pending OldBalance
 def pending_old_balance(request, store_id):
-    return render(request, 'users_temp/edit_old_balance.html')
+    store = Store.objects.get(id=store_id)
+    name = 'Pending'
+
+    if request.method == 'POST':
+        form = StoreForm(request.POST)
+        if form.is_valid():
+            form_data = form.save(commit=False)
+            store.old_balance += form_data.old_balance
+            store.save()
+            messages.info(request, 'Old Balance Added Successfully')
+            return redirect('old_balance')
+    else:
+        form = StoreForm()
+        context = {'form': form, 'store': store, 'name': name,}
+
+    return render(request, 'users_temp/edit_old_balance.html', context)
+
+
+# Received OldBalance
+def received_old_balance(request, store_id):
+    store = Store.objects.get(id=store_id)
+    name = 'Received'
+
+    if request.method == 'POST':
+        form = StoreForm(request.POST)
+        if form.is_valid():
+            form_data = form.save(commit=False)
+            store.old_balance -= form_data.old_balance
+            store.save()
+            messages.info(request, 'Old Balance Added Successfully')
+            return redirect('old_balance')
+    else:
+        form = StoreForm()
+        context = {'form': form, 'store': store, 'name': name,}
+
+    return render(request, 'users_temp/edit_old_balance.html', context)
