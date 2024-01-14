@@ -59,7 +59,7 @@ def admin_home(request):
     today_expenses = today_expence.aggregate(Sum('amount'))['amount__sum'] or 0
     today_revenue = today_sales_amount - today_expenses
 
-    routes = Account.objects.all()
+    routes = Account.objects.filter(is_admin=False)
     trips = Trip.objects.filter(date=current_day, status='Active')
 
     stores_details = []
@@ -100,7 +100,7 @@ def admin_profile(request):
 def admin_routes(request):
     current_time_utc = timezone.now()
     current_day = timezone.localtime(current_time_utc).date()
-    routes = Account.objects.all()
+    routes = Account.objects.filter(is_admin=False)
     trip = Trip.objects.filter(date=current_day, status='Active')
 
     route_details = []
@@ -189,7 +189,7 @@ def admin_transactions(request):
     selected_month_number = month_dict[selected_month.lower()]
 
     months = list(calendar.month_name)[1:]
-    routes = Account.objects.all()
+    routes = Account.objects.filter(is_admin=False)
     route_details = []
 
     for route in routes:
