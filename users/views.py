@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Store, Sales, Trip, Payments
-from .forms import StoreForm, TripForm, SalesForm, ExpenceForm
+from .forms import StoreForm, TripForm, SalesForm, ExpenceForm, OldBalanceForm
 
 # Create your views here.
 
@@ -259,7 +259,7 @@ def pending_old_balance(request, store_id):
     name = 'Pending'
 
     if request.method == 'POST':
-        form = StoreForm(request.POST)
+        form = OldBalanceForm(request.POST)
         if form.is_valid():
             form_data = form.save(commit=False)
             store.old_balance += form_data.old_balance
@@ -267,7 +267,7 @@ def pending_old_balance(request, store_id):
             messages.info(request, 'Old Balance Added Successfully')
             return redirect('old_balance')
     else:
-        form = StoreForm()
+        form = OldBalanceForm()
         context = {'form': form, 'store': store, 'name': name,}
 
     return render(request, 'users_temp/edit_old_balance.html', context)
@@ -279,7 +279,7 @@ def received_old_balance(request, store_id):
     name = 'Received'
 
     if request.method == 'POST':
-        form = StoreForm(request.POST)
+        form = OldBalanceForm(request.POST)
         if form.is_valid():
             form_data = form.save(commit=False)
             store.old_balance -= form_data.old_balance
@@ -287,7 +287,7 @@ def received_old_balance(request, store_id):
             messages.info(request, 'Old Balance Added Successfully')
             return redirect('old_balance')
     else:
-        form = StoreForm()
+        form = OldBalanceForm()
         context = {'form': form, 'store': store, 'name': name,}
 
     return render(request, 'users_temp/edit_old_balance.html', context)

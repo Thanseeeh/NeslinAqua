@@ -3,8 +3,6 @@ from .models import Store, Trip, Sales, Payments
 
 
 class StoreForm(forms.ModelForm):
-    old_balance = forms.DecimalField(widget=forms.HiddenInput(), required=False)
-    
     class Meta:
         model = Store
         fields = ['name', 'price_for_jar', 'stand', 'dispencer']
@@ -37,4 +35,13 @@ class ExpenceForm(forms.ModelForm):
         widgets = {
             'title'          : forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Title'}),
             'amount' : forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': '0.00'}),
+        }
+
+
+class OldBalanceForm(forms.ModelForm):
+    class Meta:
+        model = Store
+        fields = ['old_balance']
+        widgets = {
+            'old_balance' : forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': '0.00'}),
         }
