@@ -238,6 +238,13 @@ def admin_transactions(request):
     return render(request, 'admins_temp/admin-transactions.html', context)
 
 
+# Admin Old Balances
+def admin_old_balances(request):
+    stores = Store.objects.all().order_by('route')
+    context = {'stores': stores}
+    return render(request, 'admins_temp/admin-old-balances.html', context)
+
+
 # Block user
 def block_user(request, user_id):
     user = Account.objects.get(id=user_id)
