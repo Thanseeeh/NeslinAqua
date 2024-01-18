@@ -11,24 +11,25 @@
     <div class="row bg-light rounded align-items-center justify-content-center mx-0 p-lg-5 p-3">
         <div class="table-responsive">
             <h3 class="text-center mb-5 mt-3">Stores and Old Balances</h3>
-            <table class="table text-start align-middle table-bordered table-hover mb-0">
-                <thead>
-                    <tr class="text-dark">
-                        <th scope="col">Store Name</th>
-                        <th scope="col">Route Name</th>
-                        <th scope="col">Old balance</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for store in stores %}
-                    <tr>
-                        <td>{{ store.name }}</td>
-                        <td>{{ store.route.username }}</td>
-                        <td>{{ store.old_balance }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            {% for account in accounts %}
+                <h4 class="text-center mb-3">{{ account.username }}'s Stores</h4>
+                <table class="table text-start align-middle table-bordered table-hover mb-4">
+                    <thead>
+                        <tr class="text-dark">
+                            <th scope="col">Store Name</th>
+                            <th scope="col">Old balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for store in account.store_set.all %}
+                        <tr>
+                            <td>{{ store.name }}</td>
+                            <td>{{ store.old_balance }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endfor %}
         </div>
     </div>
 </div>

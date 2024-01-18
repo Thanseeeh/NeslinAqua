@@ -240,8 +240,8 @@ def admin_transactions(request):
 
 # Admin Old Balances
 def admin_old_balances(request):
-    stores = Store.objects.all().order_by('route')
-    context = {'stores': stores}
+    accounts = Account.objects.all()
+    context = {'accounts': accounts}
     return render(request, 'admins_temp/admin-old-balances.html', context)
 
 
