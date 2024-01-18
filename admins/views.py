@@ -91,11 +91,6 @@ def admin_home(request):
     return render(request, 'admins_temp/admin-home.html', context)
 
 
-# Admin Profile
-def admin_profile(request):
-    return render(request, 'admins_temp/admin-profile.html')
-
-
 # Admin Routes
 def admin_routes(request):
     current_time_utc = timezone.now()
