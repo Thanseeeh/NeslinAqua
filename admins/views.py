@@ -40,14 +40,14 @@ def admin_home(request):
         )
 
         total_sales_amount = sales.aggregate(Sum('amount'))['amount__sum'] or 0
-        total_expenses = expenses.aggregate(Sum('amount'))['amount__sum'] or 0
-        total_revenue = total_sales_amount - total_expenses
+        total_expense_amount = expenses.aggregate(Sum('amount'))['amount__sum'] or 0
+        total_revenue_amount = total_sales_amount - total_expense_amount
 
         yearly_data.append({
             'year': year,
             'total_sales_amount': total_sales_amount,
-            'total_expenses': total_expenses,
-            'total_revenue': total_revenue,
+            'total_expense_amount': total_expense_amount,
+            'total_revenue_amount': total_revenue_amount,
         })
 
     current_time_utc = timezone.now()
@@ -240,7 +240,7 @@ def admin_transactions(request):
 
 # Admin Old Balances
 def admin_old_balances(request):
-    accounts = Account.objects.all()
+    accounts = Account.objects.filter(is_admin=False)
     context = {'accounts': accounts}
     return render(request, 'admins_temp/admin-old-balances.html', context)
 

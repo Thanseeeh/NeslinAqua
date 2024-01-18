@@ -166,13 +166,13 @@
                 borderWidth: 1
             }, {
                 label: 'Total Expenses',
-                data: [{% for data in yearly_data %}{{ data.total_expenses }},{% endfor %}],
+                data: [{% for data in yearly_data %}{{ data.total_expense_amount }},{% endfor %}],
                 backgroundColor: 'rgba(0, 123, 255, 0.4)',
                 borderColor: 'rgba(0, 123, 255, 1)',
                 borderWidth: 1
             }, {
                 label: 'Total Revenue',
-                data: [{% for data in yearly_data %}{{ data.total_revenue }},{% endfor %}],
+                data: [{% for data in yearly_data %}{{ data.total_revenue_amount }},{% endfor %}],
                 backgroundColor: 'rgba(100, 255, 100, 1)',
                 borderColor: 'rgba(255, 206, 86, 1)',
                 borderWidth: 1
