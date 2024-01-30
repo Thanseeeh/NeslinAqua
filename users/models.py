@@ -41,6 +41,15 @@ class Sales(models.Model):
 # Daily Payments
 class Payments(models.Model):
     title   = models.CharField(max_length=100, null=True)
-    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    amount  = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     date    = models.DateField(auto_now_add=True)
     route   = models.ForeignKey(Account, on_delete=models.CASCADE)
+
+
+# Credit and Debit Amounts
+class CreditDebitAmounts(models.Model):
+    date    = models.DateField(auto_now_add=True)
+    store   = models.ForeignKey(Store, on_delete=models.CASCADE)
+    route   = models.ForeignKey(Account, on_delete=models.CASCADE)
+    amount  = models.IntegerField(default=0)
+    title   = models.CharField(max_length=200, null=True)

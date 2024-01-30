@@ -132,11 +132,6 @@ def old_balance(request):
     return render(request, 'users_temp/old_balance.html', context)
 
 
-# Profile
-def profile(request):
-    return render(request, 'users_temp/profile.html')
-
-
 # AddStore
 def add_store(request):
     route = request.user
