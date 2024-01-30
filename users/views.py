@@ -3,7 +3,7 @@ from django.db.models import Sum
 from django.utils import timezone
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Store, Sales, Trip, Payments
+from .models import Store, Sales, Trip, Payments, CreditDebitAmounts
 from .forms import StoreForm, TripForm, SalesForm, ExpenceForm, OldBalanceForm
 
 # Create your views here.
@@ -250,6 +250,7 @@ def old_balance_confirmation(request, store_id):
 
 # Pending OldBalance
 def pending_old_balance(request, store_id):
+    route = request.user
     store = Store.objects.get(id=store_id)
     name = 'Pending'
 
@@ -259,6 +260,8 @@ def pending_old_balance(request, store_id):
             form_data = form.save(commit=False)
             store.old_balance += form_data.old_balance
             store.save()
+
+            credit_debit = CreditDebitAmounts.objects.create(amount=form_data.old_balance, title='Pending', route=route, store=store)
             messages.info(request, 'Old Balance Added Successfully')
             return redirect('old_balance')
     else:
@@ -270,6 +273,7 @@ def pending_old_balance(request, store_id):
 
 # Received OldBalance
 def received_old_balance(request, store_id):
+    route = request.user
     store = Store.objects.get(id=store_id)
     name = 'Received'
 
@@ -279,6 +283,8 @@ def received_old_balance(request, store_id):
             form_data = form.save(commit=False)
             store.old_balance -= form_data.old_balance
             store.save()
+
+            credit_debit = CreditDebitAmounts.objects.create(amount=form_data.old_balance, title='Received', route=route, store=store)
             messages.info(request, 'Old Balance Added Successfully')
             return redirect('old_balance')
     else:
