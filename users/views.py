@@ -105,10 +105,14 @@ def payments(request):
 
     sales = Sales.objects.filter(route=route, date=current_day)
     expenses = Payments.objects.filter(route=route, date=current_day)
+    old_credits = CreditDebitAmounts.objects.filter(route=route, date=current_day, title='Received')
+    new_credits = CreditDebitAmounts.objects.filter(route=route, date=current_day, title='Pending')
 
     total_sales_amount = sales.aggregate(Sum('amount'))['amount__sum'] or 0
     total_expenses = expenses.aggregate(Sum('amount'))['amount__sum'] or 0
-    total_revenue = total_sales_amount - total_expenses
+    old_credit_amount = old_credits.aggregate(Sum('amount'))['amount__sum'] or 0
+    new_credit_amount = new_credits.aggregate(Sum('amount'))['amount__sum'] or 0
+    total_revenue = total_sales_amount + old_credit_amount - total_expenses - new_credit_amount
 
     context = {
         'trip': trip,
@@ -117,6 +121,8 @@ def payments(request):
         'total_sales_amount': total_sales_amount,
         'expenses': expenses,
         'total_expenses': total_expenses,
+        'old_credit_amount': old_credit_amount,
+        'new_credit_amount': new_credit_amount,
         'total_revenue': total_revenue,
     }
     return render(request, 'users_temp/payments.html', context)
