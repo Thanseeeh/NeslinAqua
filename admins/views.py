@@ -20,10 +20,12 @@ def admin_home(request):
     
     sale = Sales.objects.all()
     expence = Payments.objects.all()
+    old_balance = Store.objects.all()
 
     total_sale = sale.aggregate(Sum('amount'))['amount__sum'] or 0
     total_expence = expence.aggregate(Sum('amount'))['amount__sum'] or 0
-    total_revenue = total_sale - total_expence
+    total_old_balance = old_balance.aggregate(Sum('old_balance'))['old_balance__sum'] or 0
+    total_revenue = total_sale - total_expence - total_old_balance
 
     # Get distinct years from the Sales table
     available_years_query = Sales.objects.dates('date', 'year').order_by('-date__year').distinct()
@@ -79,6 +81,7 @@ def admin_home(request):
     context = {
         'total_sale': total_sale,
         'total_expence': total_expence,
+        'total_old_balance': total_old_balance,
         'total_revenue': total_revenue,
         'yearly_data': yearly_data,
         'today_sales_amount': today_sales_amount,
