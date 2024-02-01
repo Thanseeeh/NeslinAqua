@@ -15,7 +15,8 @@ from django.http import JsonResponse
 
 # Admin Home
 def admin_home(request):
-     
+    if 'super_username' not in request.session:
+        return redirect('login_user') 
     
     sale = Sales.objects.all()
     expence = Payments.objects.all()
