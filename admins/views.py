@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib import messages
 from accounts.models import Account
 from accounts.forms import Registrationform
-from users.models import Trip, Sales, Payments, Store
+from users.models import Trip, Sales, Payments, Store, CreditDebitAmounts
 from django.db.models import Sum
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import calendar
