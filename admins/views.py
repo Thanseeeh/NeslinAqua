@@ -107,19 +107,25 @@ def admin_routes(request):
         trips = Trip.objects.filter(route=route, date=current_day)
         sales = Sales.objects.filter(route=route, date=current_day)
         expenses = Payments.objects.filter(route=route, date=current_day)
+        new_credit = CreditDebitAmounts.objects.filter(route=route, date=current_day, title='Pending')
+        received_oldbalance = CreditDebitAmounts.objects.filter(route=route, date=current_day, title='Received')
 
         total_jars_sold = trips.aggregate(Sum('jars_sold'))['jars_sold__sum'] or 0
         total_jars = trips.aggregate(Sum('jars'))['jars__sum'] or 0
         total_sales_amount = sales.aggregate(Sum('amount'))['amount__sum'] or 0
         total_expenses = expenses.aggregate(Sum('amount'))['amount__sum'] or 0
-        total_revenue = total_sales_amount - total_expenses
-
+        new_credit_amount = new_credit.aggregate(Sum('amount'))['amount__sum'] or 0
+        new_received_oldbalance = received_oldbalance.aggregate(Sum('amount'))['amount__sum'] or 0
+        total_revenue = total_sales_amount - total_expenses + new_received_oldbalance - new_credit_amount
+ 
         route_details.append({
             'route': route,
             'total_jars_sold': total_jars_sold,
             'total_jars': total_jars,
             'total_sales_amount': total_sales_amount,
             'total_expenses': total_expenses,
+            'new_credit_amount': new_credit_amount,
+            'new_received_oldbalance': new_received_oldbalance,
             'total_revenue': total_revenue,
         })
 
