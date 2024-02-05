@@ -75,6 +75,37 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="table-responsive mt-5">
+            <h3 class="text-center mb-5 mt-5">{{ route_object }} : Today's Credits and Debits</h3>
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+                <thead>
+                    <tr class="text-dark">
+                        <th scope="col">Date</th>
+                        <th scope="col">Store</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for expence in expences %}
+                    <tr>
+                        <td>{{ expence.date|date:"F j, Y" }}</td>
+                        <td>{{ expence.title }}</td>
+                        <td>{{ expence.title }}</td>
+                        <td>{{ expence.amount }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td>No Expences</td>
+                        <td>No Expences</td>
+                        <td>No Expences</td>
+                        <td>No Expences</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <!-- Blank End -->
