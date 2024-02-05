@@ -92,8 +92,13 @@
                     <tr>
                         <td>{{ data.date|date:"F j, Y" }}</td>
                         <td>{{ data.store }}</td>
-                        <td>{{ data.title }}</td>
-                        <td>{{ data.amount }}</td>
+                        {% if 'Pending' in data.title %}
+                            <td class="text-danger">Pending Amount</td>
+                            <td class="text-danger">-{{ data.amount }}</td>
+                        {% else %}
+                            <td class="text-success"> Received Old Balance </td>
+                            <td class="text-success">+{{ data.amount }}</td>
+                        {% endif %}
                     </tr>
                     {% empty %}
                     <tr>
