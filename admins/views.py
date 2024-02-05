@@ -150,12 +150,14 @@ def route_details(request, route):
         store_sales.append({'store': store, 'sales_records': sales_records})
     
     expences = Payments.objects.filter(route=route, date=current_day)
+    credit_debit = CreditDebitAmounts.objects.filter(route=route, date=current_day)
 
     context = {
         'route_object': route_object,
         'stores': stores,
         'store_sales': store_sales,
         'expences': expences,
+        'credit_debit': credit_debit,
     }
     return render(request, 'admins_temp/route_details.html', context)
 

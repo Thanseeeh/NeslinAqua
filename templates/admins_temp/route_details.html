@@ -88,12 +88,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for expence in expences %}
+                    {% for data in credit_debit %}
                     <tr>
-                        <td>{{ expence.date|date:"F j, Y" }}</td>
-                        <td>{{ expence.title }}</td>
-                        <td>{{ expence.title }}</td>
-                        <td>{{ expence.amount }}</td>
+                        <td>{{ data.date|date:"F j, Y" }}</td>
+                        <td>{{ data.store }}</td>
+                        <td>{{ data.title }}</td>
+                        <td>{{ data.amount }}</td>
                     </tr>
                     {% empty %}
                     <tr>
