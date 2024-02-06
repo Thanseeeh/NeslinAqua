@@ -298,3 +298,23 @@ def received_old_balance(request, store_id):
         context = {'form': form, 'store': store, 'name': name,}
 
     return render(request, 'users_temp/edit_old_balance.html', context)
+
+
+# Google Pay
+def google_pay(request, store_id):
+    route = request.user
+    store = Store.objects.get(id=store_id)
+    name = 'GooglePay'
+
+    if request.method == 'POST':
+        form = OldBalanceForm(request.POST)
+        if form.is_valid():
+            form_data = form.save(commit=False)
+            credit_debit = CreditDebitAmounts.objects.create(amount=form_data.old_balance, title='GooglePay', route=route, store=store)
+            messages.info(request, 'GooglePay Added Successfully')
+            return redirect('old_balance')
+    else:
+        form = OldBalanceForm()
+        context = {'form': form, 'store': store, 'name': name,}
+
+    return render(request, 'users_temp/edit_old_balance.html', context)

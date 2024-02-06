@@ -13,4 +13,5 @@ urlpatterns = [
     path('old-balance-confirmation/<int:store_id>/', views.old_balance_confirmation, name='old_balance_confirmation'),
     path('pending-old-balance/<int:store_id>/', views.pending_old_balance, name='pending_old_balance'),
     path('received-old-balance/<int:store_id>/', views.received_old_balance, name='received_old_balance'),
+    path('google-pay/<int:store_id>/', views.google_pay, name='google_pay'),
 ]
