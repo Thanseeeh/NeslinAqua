@@ -98,6 +98,10 @@
                                     <a href="{% url 'pending_old_balance' store.id %}" class="btn btn-primary py-3 w-100 mb-4 fw-bold">Pending Amount</a>
                                     <small class="text-success">*if old balance is cleared</small>
                                     <a href="{% url 'received_old_balance' store.id %}" class="btn btn-primary py-3 w-100 mb-4 fw-bold">Received Amount</a>
+                                    <div class="mt-5 text-center">
+                                        <h4 class="text-primary">Google Pay</h4>
+                                        <a href="{% url 'googlepay' store.id %}" class="btn btn-primary py-3 w-100 mb-4 fw-bold">Amount</a>
+                                    <div>
                                 </div>
                             </div>
                         </div>
