@@ -107,12 +107,15 @@ def payments(request):
     expenses = Payments.objects.filter(route=route, date=current_day)
     old_credits = CreditDebitAmounts.objects.filter(route=route, date=current_day, title='Received')
     new_credits = CreditDebitAmounts.objects.filter(route=route, date=current_day, title='Pending')
+    google_pay = CreditDebitAmounts.objects.filter(route=route, date=current_day, title='GooglePay')
 
     total_sales_amount = sales.aggregate(Sum('amount'))['amount__sum'] or 0
     total_expenses = expenses.aggregate(Sum('amount'))['amount__sum'] or 0
     old_credit_amount = old_credits.aggregate(Sum('amount'))['amount__sum'] or 0
     new_credit_amount = new_credits.aggregate(Sum('amount'))['amount__sum'] or 0
+    google_pay_amount = google_pay.aggregate(Sum('amount'))['amount__sum'] or 0
     total_revenue = total_sales_amount + old_credit_amount - total_expenses - new_credit_amount
+    cash_in_hand = total_revenue - google_pay_amount
 
     context = {
         'trip': trip,
@@ -123,6 +126,8 @@ def payments(request):
         'total_expenses': total_expenses,
         'old_credit_amount': old_credit_amount,
         'new_credit_amount': new_credit_amount,
+        'cash_in_hand': cash_in_hand,
+        'google_pay_amount': google_pay_amount,
         'total_revenue': total_revenue,
     }
     return render(request, 'users_temp/payments.html', context)
