@@ -77,7 +77,7 @@
         </div>
 
         <div class="table-responsive mt-5">
-            <h3 class="text-center mb-5 mt-5">{{ route_object }} : Today's Credits and Debits</h3>
+            <h3 class="text-center mb-5 mt-5">{{ route_object }} : Today's Credits, Debits and GooglePay</h3>
             <table class="table text-start align-middle table-bordered table-hover mb-0">
                 <thead>
                     <tr class="text-dark">
@@ -95,8 +95,11 @@
                         {% if 'Pending' in data.title %}
                             <td class="text-danger">Pending Amount</td>
                             <td class="text-danger">-{{ data.amount }}</td>
-                        {% else %}
+                        {% elif 'Received' in data.title %}
                             <td class="text-success"> Received Old Balance </td>
+                            <td class="text-success">+{{ data.amount }}</td>
+                        {% else %}
+                            <td class="text-primary"> Google Pay </td>
                             <td class="text-success">+{{ data.amount }}</td>
                         {% endif %}
                     </tr>

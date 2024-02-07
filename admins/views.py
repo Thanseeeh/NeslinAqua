@@ -109,6 +109,7 @@ def admin_routes(request):
         expenses = Payments.objects.filter(route=route, date=current_day)
         new_credit = CreditDebitAmounts.objects.filter(route=route, date=current_day, title='Pending')
         received_oldbalance = CreditDebitAmounts.objects.filter(route=route, date=current_day, title='Received')
+        google_pay = CreditDebitAmounts.objects.filter(route=route, date=current_day, title='GooglePay')
 
         total_jars_sold = trips.aggregate(Sum('jars_sold'))['jars_sold__sum'] or 0
         total_jars = trips.aggregate(Sum('jars'))['jars__sum'] or 0
@@ -116,7 +117,9 @@ def admin_routes(request):
         total_expenses = expenses.aggregate(Sum('amount'))['amount__sum'] or 0
         new_credit_amount = new_credit.aggregate(Sum('amount'))['amount__sum'] or 0
         new_received_oldbalance = received_oldbalance.aggregate(Sum('amount'))['amount__sum'] or 0
+        google_pay_amount = google_pay.aggregate(Sum('amount'))['amount__sum'] or 0
         total_revenue = total_sales_amount - total_expenses + new_received_oldbalance - new_credit_amount
+        cash_in_hand = total_revenue - google_pay_amount
  
         route_details.append({
             'route': route,
@@ -126,6 +129,8 @@ def admin_routes(request):
             'total_expenses': total_expenses,
             'new_credit_amount': new_credit_amount,
             'new_received_oldbalance': new_received_oldbalance,
+            'google_pay_amount': google_pay_amount,
+            'cash_in_hand': cash_in_hand,
             'total_revenue': total_revenue,
         })
 
