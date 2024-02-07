@@ -87,7 +87,7 @@
                     <div class="container-fluid">
                         <div class="row h-100 align-items-center justify-content-center">
                             <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 w-100">
-                                <form class="bg-light rounded p-4 p-sm-5 my-4 mx-3 shadow" action="{% if name == 'Pending' %}{% url 'pending_old_balance' store.id %}{% else %}{% url 'received_old_balance' store.id %}{% endif %}" method="post">
+                                <form class="bg-light rounded p-4 p-sm-5 my-4 mx-3 shadow" action="{% if name == 'Pending' %}{% url 'pending_old_balance' store.id %}{% elif name == 'Received' %}{% url 'received_old_balance' store.id %}{% else %}{% url 'google_pay' store.id %}{% endif %}" method="post">
                                     {% csrf_token %}
                                     <div class="d-flex align-items-center justify-content-between mb-3">
                                         <h4 class="text-primary">Submit {{ name }} Amount</h4>
