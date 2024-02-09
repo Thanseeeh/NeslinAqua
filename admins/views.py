@@ -97,6 +97,7 @@ def admin_home(request):
 # Admin Routes
 def admin_routes(request):
     current_time_utc = timezone.now()
+    today = timezone.localtime(current_time_utc).strftime('%d-%m-%Y')
     current_day = timezone.localtime(current_time_utc).date()
     routes = Account.objects.filter(is_admin=False)
     trip = Trip.objects.filter(date=current_day, status='Active')
@@ -137,6 +138,7 @@ def admin_routes(request):
     context = {
         'route_details': route_details,
         'trip': trip,
+        'today': today,
     }
     return render(request, 'admins_temp/admin-routes.html', context)
 
