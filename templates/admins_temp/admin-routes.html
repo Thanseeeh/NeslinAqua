@@ -23,7 +23,8 @@
             </form>
         </div>  
         {% for route_detail in route_details %}
-            <a href="{% url 'route_details' route_detail.route.id %}" class="col-sm-12 col-md-6 col-xl-4">
+            {% comment %} <a href="{% url 'route_details' route_detail.route.id %}" class="col-sm-12 col-md-6 col-xl-4"> {% endcomment %}
+            <a href="{% url 'route_details' route_detail.route.id %}?selected_date={{ selected_date }}" class="col-sm-12 col-md-6 col-xl-4">
                 <div class="h-100 bg-white shadow rounded p-4 mt-5 mb-5">
                     <h4 class="mt-3 mb-0 text-center">{{ route_detail.route.username }}</h4>
                     {% if trip.exists %}

@@ -152,10 +152,16 @@ def admin_routes(request):
 
 # Route Details
 def route_details(request, route):
+    selected_date_str = request.GET.get('selected_date')
+    if selected_date_str:
+        selected_date = datetime.strptime(selected_date_str, '%b. %d, %Y').date()
+    else:
+        current_time_utc = timezone.now()
+        selected_date = timezone.localtime(current_time_utc).date()
+
     route = route
     route_object = Account.objects.filter(id=route).first()
-    current_time_utc = timezone.now()
-    current_day = timezone.localtime(current_time_utc).date()
+    current_day = selected_date
 
     stores = Store.objects.filter(route=route)
     store_sales = []
@@ -172,6 +178,7 @@ def route_details(request, route):
         'store_sales': store_sales,
         'expences': expences,
         'credit_debit': credit_debit,
+        'selected_date': selected_date,
     }
     return render(request, 'admins_temp/route_details.html', context)
 
