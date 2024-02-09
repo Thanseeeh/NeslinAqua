@@ -178,7 +178,7 @@ def route_details(request, route):
         'store_sales': store_sales,
         'expences': expences,
         'credit_debit': credit_debit,
-        'selected_date': selected_date,
+        'selected_date': selected_date.strftime('%d-%m-%Y'),
     }
     return render(request, 'admins_temp/route_details.html', context)
 
