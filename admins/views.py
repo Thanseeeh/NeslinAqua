@@ -141,11 +141,36 @@ def admin_routes(request):
             'total_revenue': total_revenue,
         })
 
+    #Total Summery Part   
+    summery_route_details = []
+
+    summery_sales = Sales.objects.filter(date=selected_date)
+    summery_expenses = Payments.objects.filter(date=selected_date)
+    summery_new_credit = CreditDebitAmounts.objects.filter(date=selected_date, title='Pending')
+    summery_received_oldbalance = CreditDebitAmounts.objects.filter(date=selected_date, title='Received')
+    summery_google_pay = CreditDebitAmounts.objects.filter(date=selected_date, title='GooglePay')
+
+    summery_total_sales_amount = summery_sales.aggregate(Sum('amount'))['amount__sum'] or 0
+    summery_total_expenses = summery_expenses.aggregate(Sum('amount'))['amount__sum'] or 0
+    summery_new_credit_amount = summery_new_credit.aggregate(Sum('amount'))['amount__sum'] or 0
+    summery_new_received_oldbalance = summery_received_oldbalance.aggregate(Sum('amount'))['amount__sum'] or 0
+    summery_google_pay_amount = summery_google_pay.aggregate(Sum('amount'))['amount__sum'] or 0
+    summery_total_revenue = summery_total_sales_amount - summery_total_expenses + summery_new_received_oldbalance - summery_new_credit_amount
+    summery_cash_in_hand = summery_total_revenue - summery_google_pay_amount
+    
     context = {
         'route_details': route_details,
         'trip': trip,
         'today': today,
         'selected_date': selected_date,
+        
+        'summery_total_sales_amount': summery_total_sales_amount,
+        'summery_total_expenses': summery_total_expenses,
+        'summery_new_credit_amount': summery_new_credit_amount,
+        'summery_new_received_oldbalance': summery_new_received_oldbalance,
+        'summery_google_pay_amount': summery_google_pay_amount,
+        'summery_cash_in_hand': summery_cash_in_hand,
+        'summery_total_revenue': summery_total_revenue,
     }
     return render(request, 'admins_temp/admin-routes.html', context)
 
