@@ -97,20 +97,26 @@ def admin_home(request):
 # Admin Routes
 def admin_routes(request):
     current_time_utc = timezone.now()
-    today = timezone.localtime(current_time_utc).strftime('%d-%m-%Y')
-    current_day = timezone.localtime(current_time_utc).date()
+    today = timezone.localtime(current_time_utc).date()
+
+    selected_date = today
+
+    if request.method == 'GET' and 'selected_date' in request.GET:
+        selected_date_str = request.GET.get('selected_date')
+        selected_date = timezone.datetime.strptime(selected_date_str, '%Y-%m-%d').date()
+
     routes = Account.objects.filter(is_admin=False)
-    trip = Trip.objects.filter(date=current_day, status='Active')
+    trip = Trip.objects.filter(date=selected_date, status='Active')
 
     route_details = []
 
     for route in routes:
-        trips = Trip.objects.filter(route=route, date=current_day)
-        sales = Sales.objects.filter(route=route, date=current_day)
-        expenses = Payments.objects.filter(route=route, date=current_day)
-        new_credit = CreditDebitAmounts.objects.filter(route=route, date=current_day, title='Pending')
-        received_oldbalance = CreditDebitAmounts.objects.filter(route=route, date=current_day, title='Received')
-        google_pay = CreditDebitAmounts.objects.filter(route=route, date=current_day, title='GooglePay')
+        trips = Trip.objects.filter(route=route, date=selected_date)
+        sales = Sales.objects.filter(route=route, date=selected_date)
+        expenses = Payments.objects.filter(route=route, date=selected_date)
+        new_credit = CreditDebitAmounts.objects.filter(route=route, date=selected_date, title='Pending')
+        received_oldbalance = CreditDebitAmounts.objects.filter(route=route, date=selected_date, title='Received')
+        google_pay = CreditDebitAmounts.objects.filter(route=route, date=selected_date, title='GooglePay')
 
         total_jars_sold = trips.aggregate(Sum('jars_sold'))['jars_sold__sum'] or 0
         total_jars = trips.aggregate(Sum('jars'))['jars__sum'] or 0
@@ -121,7 +127,7 @@ def admin_routes(request):
         google_pay_amount = google_pay.aggregate(Sum('amount'))['amount__sum'] or 0
         total_revenue = total_sales_amount - total_expenses + new_received_oldbalance - new_credit_amount
         cash_in_hand = total_revenue - google_pay_amount
- 
+
         route_details.append({
             'route': route,
             'total_jars_sold': total_jars_sold,
@@ -139,6 +145,7 @@ def admin_routes(request):
         'route_details': route_details,
         'trip': trip,
         'today': today,
+        'selected_date': selected_date,
     }
     return render(request, 'admins_temp/admin-routes.html', context)
 

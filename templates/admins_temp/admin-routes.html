@@ -11,24 +11,11 @@
     <div class="row bg-light rounded align-items-center justify-content-center mx-0">
         <div class="d-flex justify-content-between mt-5">
             <div>
-                <h2 id="currentDayDisplay" class="mx-md-5 mb-4">[{{ today }}] Route Details</h2>
+                <h2 id="currentDayDisplay" class="mx-md-5 mb-4">[{{ selected_date|date:"d-m-Y" }}] Route Details</h2>
             </div>
-            <form method="GET" action="{% url 'admin_transactions' %}" class="mb-3">
+            <form method="GET" action="{% url 'admin_routes' %}" class="mb-3">
                 <div class="row justify-content-center mx-md-5">
-                    <div class="col-md-4">
-                        <select name="selected_year" class="form-select">
-                            {% for year in available_years %}
-                                <option value="{{ year }}" {% if selected_year == year %}selected{% endif %}>{{ year }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <select name="selected_month" class="form-select">
-                            {% for month in months %}
-                                <option value="{{ month }}" {% if selected_month == month %}selected{% endif %}>{{ month }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
+                    <input type="date" id="selected_date" name="selected_date" class="col-md-4">
                     <div class="col-md-4 text-end text-md-start">
                         <button type="submit" class="btn btn-primary">Update</button>
                     </div>
@@ -100,6 +87,12 @@
 <script>
     var mylink=document.getElementById("admin_routes")
     mylink.classList.add("active")
+
+    function changeDate(select) {
+        var selectedDate = select.value;
+        document.getElementById("currentDayDisplay").innerText = selectedDate + " Route Details";
+        console.log("Selected Date:", selectedDate);
+    }
 </script>
 
 {% endblock%}
