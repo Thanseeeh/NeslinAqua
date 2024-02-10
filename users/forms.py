@@ -5,12 +5,13 @@ from .models import Store, Trip, Sales, Payments
 class StoreForm(forms.ModelForm):
     class Meta:
         model = Store
-        fields = ['name', 'price_for_jar', 'stand', 'dispencer']
+        fields = ['name', 'price_for_jar']
+        # fields = ['name', 'price_for_jar', 'stand', 'dispencer']
         widgets = {
             'name'          : forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Name'}),
             'price_for_jar' : forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': '0.00'}),
-            'stand'         : forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': '0'}),
-            'dispencer'     : forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': '0'}),
+            # 'stand'         : forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': '0'}),
+            # 'dispencer'     : forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': '0'}),
         }
 
 
