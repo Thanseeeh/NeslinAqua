@@ -63,8 +63,3 @@ project.settings
 
 # Ignore editor config files
 .editorconfig
-
-# Ignore static and user-uploaded files (for web projects)
-static/
-media/
-uploads/
