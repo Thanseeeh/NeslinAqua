@@ -163,7 +163,7 @@ def admin_routes(request):
         'trip': trip,
         'today': today,
         'selected_date': selected_date,
-        
+
         'summery_total_sales_amount': summery_total_sales_amount,
         'summery_total_expenses': summery_total_expenses,
         'summery_new_credit_amount': summery_new_credit_amount,
@@ -190,8 +190,15 @@ def route_details(request, route):
 
     stores = Store.objects.filter(route=route)
     store_sales = []
+    total_jars = 0
+    total_amount = 0
+
     for store in stores:
         sales_records = Sales.objects.filter(store=store, route=route, date=current_day).order_by('-date')
+        jars_sum = sales_records.aggregate(Sum('jars'))['jars__sum'] or 0
+        amount_sum = sales_records.aggregate(Sum('amount'))['amount__sum'] or 0
+        total_jars += jars_sum
+        total_amount += amount_sum
         store_sales.append({'store': store, 'sales_records': sales_records})
     
     expences = Payments.objects.filter(route=route, date=current_day)
@@ -204,6 +211,8 @@ def route_details(request, route):
         'expences': expences,
         'credit_debit': credit_debit,
         'selected_date': selected_date.strftime('%d-%m-%Y'),
+        'total_jars': total_jars,
+        'total_amount': total_amount,
     }
     return render(request, 'admins_temp/route_details.html', context)
 
