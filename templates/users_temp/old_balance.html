@@ -11,7 +11,12 @@
     <div class="row bg-light rounded align-items-center justify-content-center mx-0 p-lg-5 p-3">
 
         <div class="table-responsive">
-            <h3 class="text-center mb-5 mt-3">Old Balance Details</h3>
+            <h3 class="text-center mb-3 mt-3">Old Balance Details</h3>
+            <form method="GET" action="{% url 'old_balance' %}" class="mb-5">
+                <div class="bg-glass d-flex container-fluid">
+                  <input class="form-control border-0" name="q" type="search" placeholder="Search">
+                </div>
+            </form>
             <table class="table text-start align-middle table-bordered table-hover mb-0">
                 <thead>
                     <tr class="text-dark">
