@@ -22,16 +22,16 @@
                     </thead>
                     <tbody>
                         {% for store in account.store_set.all %}
-                        <tr>
-                            <td>{{ store.name }}</td>
-                            <td>{{ store.old_balance }}</td>
-                        </tr>
+                            <tr>
+                                <td>{{ store.name }}</td>
+                                <td>{{ store.old_balance }}</td>
+                            </tr>
                         {% endfor %}
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="1" class="text-start"><strong>Total</strong></td>
-                            <td>{{ total_amount }}</td>
+                            <td class="text-start"><strong>Total</strong></td>
+                            <td>{{ account.total_oldbalance }}</td> 
                         </tr>
                     </tfoot>
                 </table>

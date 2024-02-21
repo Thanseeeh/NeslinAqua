@@ -302,6 +302,9 @@ def admin_transactions(request):
 # Admin Old Balances
 def admin_old_balances(request):
     accounts = Account.objects.filter(is_admin=False)
+    for account in accounts:
+        total_oldbalance = sum(store.old_balance for store in account.store_set.all())
+        account.total_oldbalance = total_oldbalance  # Add total_oldbalance attribute to account
     context = {'accounts': accounts}
     return render(request, 'admins_temp/admin-old-balances.html', context)
 
