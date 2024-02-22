@@ -1,0 +1,43 @@
+{% extends 'admins_temp/admin-base.html' %}
+
+{% load static %}
+
+{% block title %} Ameen-AdminOldBalancesSingleView {% endblock %}
+
+{% block content %} 
+
+<!-- Blank Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row bg-light rounded align-items-center justify-content-center mx-0 p-lg-5 p-3">
+        <div class="table-responsive">
+            <h3 class="text-center mb-5 mt-3">Old Balances of {{account.username}}'s Stores </h3>
+            <table class="table text-start align-middle table-bordered table-hover mb-4">
+                <thead>
+                    <tr class="text-dark">
+                        <th scope="col">Store Name</th>
+                        <th scope="col">Old balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for store in account.store_set.all %}
+                        <tr>
+                            <td>{{ store.name }}</td>
+                            <td>{{ store.old_balance }}</td>
+                        </tr>
+                    {% empty %}
+                        <td class="text-danger">No Stores Available</td>
+                        <td class="text-danger">___</td>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-start"><strong>Total</strong></td>
+                        <td><strong>{{ account.total_oldbalance }}</strong></td> 
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Blank End -->
+{% endblock %} 
