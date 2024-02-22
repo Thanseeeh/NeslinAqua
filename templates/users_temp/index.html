@@ -39,6 +39,7 @@
                         <tr class="text-dark">
                             <th scope="col">Store Name</th>
                             <th scope="col">Jar price</th>
+                            <th scope="col">Old Balance</th>
                             <th scope="col">Date</th>
                             <th scope="col">Number of Jars</th>
                             <th scope="col">Total Amount</th>
@@ -55,9 +56,8 @@
                                     <a href="{% url 'add_sale' item.store.id %}">{{ item.store.name }}</a>
                                 {% endif %}
                             </td>
-                            <td>
-                                {{ item.store.price_for_jar|floatformat:"0" }}
-                            </td>                            
+                            <td> {{ item.store.price_for_jar|floatformat:"0" }} </td>  
+                            <td> {{ item.store.old_balance|floatformat:"0" }} </td>                               
                             {% for record in item.sales_records %}
                                 <td>{{ record.date|date:"F j, Y" }}</td>
                                 <td>{{ record.jars }}</td>
