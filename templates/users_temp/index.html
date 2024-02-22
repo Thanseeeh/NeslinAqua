@@ -33,6 +33,9 @@
                 <h6 class="mb-0">Recent Sales</h6>
                 <h6 class="mb-0">Remaining Jars: {{ remaining_jars }}</h6>
             </div>
+            <div class="bg-glass d-flex container-fluid">
+                <input class="form-control border-2 mb-4" id="searchInput" type="search" placeholder="Search">
+            </div>            
             <div class="table-responsive">
                 <table class="table text-start align-middle table-bordered table-hover mb-0">
                     <thead>
@@ -88,6 +91,24 @@
 <script>
     var mylink=document.getElementById("home")
     mylink.classList.add("active")
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const rows = document.querySelectorAll('.table tbody tr');
+
+        searchInput.addEventListener('input', function() {
+            const searchTerm = searchInput.value.toLowerCase();
+
+            rows.forEach(row => {
+                const storeName = row.querySelector('td:first-child').textContent.toLowerCase();
+                if (storeName.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    });
 </script>
 
 {% endblock %}

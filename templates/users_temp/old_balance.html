@@ -12,11 +12,9 @@
 
         <div class="table-responsive">
             <h3 class="text-center mb-3 mt-3">Old Balance Details</h3>
-            <form method="GET" action="{% url 'old_balance' %}" class="mb-5">
-                <div class="bg-glass d-flex container-fluid">
-                  <input class="form-control border-0" name="q" type="search" placeholder="Search">
-                </div>
-            </form>
+            <div class="bg-glass d-flex container-fluid">
+                <input class="form-control border-2 mb-4" id="searchInput" type="search" placeholder="Search">
+            </div> 
             <table class="table text-start align-middle table-bordered table-hover mb-0">
                 <thead>
                     <tr class="text-dark">
@@ -42,6 +40,24 @@
 <script>
     var mylink=document.getElementById("old_balance")
     mylink.classList.add("active")
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const rows = document.querySelectorAll('.table tbody tr');
+
+        searchInput.addEventListener('input', function() {
+            const searchTerm = searchInput.value.toLowerCase();
+
+            rows.forEach(row => {
+                const storeName = row.querySelector('td:first-child').textContent.toLowerCase();
+                if (storeName.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    });
 </script>
 
 {% endblock %}

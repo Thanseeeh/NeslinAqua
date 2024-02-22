@@ -136,12 +136,7 @@ def payments(request):
 # Old Balance
 def old_balance(request):
     route = request.user
-
-    if 'q' in request.GET:
-        q = request.GET['q']
-        stores = Store.objects.filter(name__icontains=q)
-    else:
-        stores = Store.objects.filter(route=route)
+    stores = Store.objects.filter(route=route)
     context = {
         'stores': stores,
     }
