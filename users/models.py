@@ -30,7 +30,7 @@ class Trip(models.Model):
 
 # Shop Sales
 class Sales(models.Model):
-    jars    = models.PositiveIntegerField(default=0)
+    jars    = models.DecimalField(max_digits=10, decimal_places=0, default=0)
     store   = models.ForeignKey(Store, on_delete=models.CASCADE)
     date    = models.DateField(auto_now_add=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
