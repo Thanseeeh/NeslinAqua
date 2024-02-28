@@ -188,7 +188,7 @@ def route_details(request, route):
     route_object = Account.objects.filter(id=route).first()
     current_day = selected_date
 
-    stores = Store.objects.filter(route=route)
+    stores = Store.objects.filter(route=route).order_by('name')
     store_sales = []
     total_jars = 0
     total_amount = 0
