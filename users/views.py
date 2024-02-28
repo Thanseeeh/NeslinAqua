@@ -77,7 +77,7 @@ def home(request):
     else:
         remaining_jars = 0
         
-    stores = Store.objects.filter(route=route)
+    stores = Store.objects.filter(route=route).order_by('name')
     store_sales = []
     for store in stores:
         sales_records = Sales.objects.filter(store=store, route=route, date=current_day).order_by('-date')
