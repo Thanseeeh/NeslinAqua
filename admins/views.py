@@ -309,10 +309,12 @@ def admin_old_balances(request):
 # Admin Old Balances Single View
 def admin_old_balances_single_view(request, route_id):
     account = Account.objects.get(id=route_id)
-    total_oldbalance = sum(store.old_balance for store in account.store_set.all())
+    sorted_stores = account.store_set.all().order_by('name')
+
+    total_oldbalance = sum(store.old_balance for store in sorted_stores)
     account.total_oldbalance = total_oldbalance
 
-    context = {'account': account}
+    context = {'account': account, 'sorted_stores': sorted_stores}
     return render(request, 'admins_temp/admin-old-balances-single-view.html', context)
 
 
