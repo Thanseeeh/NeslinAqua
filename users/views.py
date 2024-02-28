@@ -136,7 +136,7 @@ def payments(request):
 # Old Balance
 def old_balance(request):
     route = request.user
-    stores = Store.objects.filter(route=route)
+    stores = Store.objects.filter(route=route).order_by('name')
     context = {
         'stores': stores,
     }
