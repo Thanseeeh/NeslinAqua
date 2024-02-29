@@ -27,7 +27,7 @@
                         <td>{{ item.store.name }}</td>
                         {% for record in item.sales_records %}
                             <td>{{ record.date|date:"F j, Y" }}</td>
-                            <td><a href="">{{ record.jars }}</a></td>
+                            <td>{{ record.jars }}</td>
                             <td>{{ record.amount }}</td>
                             <td>
                                 {% if record.is_delivered %}
