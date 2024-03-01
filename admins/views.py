@@ -179,7 +179,10 @@ def admin_routes(request):
 def route_details(request, route):
     selected_date_str = request.GET.get('selected_date')
     if selected_date_str:
-        selected_date = datetime.strptime(selected_date_str, '%b. %d, %Y').date()
+        try:
+            selected_date = datetime.strptime(selected_date_str, '%b. %d, %Y').date()
+        except ValueError:
+            selected_date = datetime.strptime(selected_date_str, '%B %d, %Y').date()
     else:
         current_time_utc = timezone.now()
         selected_date = timezone.localtime(current_time_utc).date()
