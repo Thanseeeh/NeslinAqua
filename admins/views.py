@@ -10,6 +10,8 @@ import calendar
 from datetime import datetime
 from django.http import JsonResponse
 from users.forms import SalesForm
+from decimal import Decimal
+from django.db.models import F
 
 # Create your views here.
 
@@ -383,6 +385,8 @@ def transaction_listing(request):
 # Edit Jar
 def edit_jar(request, record_id):
     sale = Sales.objects.get(id=record_id)
+    trip = Trip.objects.get(route=sale.route, date=sale.date, status='Active')
+    old_jars = sale.jars
     form = SalesForm(instance=sale)
 
     if request.method == 'POST':
@@ -390,8 +394,27 @@ def edit_jar(request, record_id):
         if form.is_valid():
             jars = form.cleaned_data['jars']
 
+            # Convert float to Decimal for precise arithmetic
+            store_price = Decimal(str(sale.store.price_for_jar))
+
+            # Calculate the new amount based on the updated jar count
+            sale.amount = jars * store_price
+
+            # Determine the difference between the old jar count and the new one
+            jars_difference = jars - old_jars
+            print('old jars count', old_jars)
+            print('new jars = ', jars)
+            print("jars_differece = ", jars_difference)
+
+            # Update the jars_sold count by adding the difference to the current value
+            # Trip.objects.filter(route=sale.route, date=sale.date).update(jars_sold=F('jars_sold') + jars_difference)
+            trip.jars_sold += jars_difference
+
+            # Update the sale object with the new jar count and amount
             sale.jars = jars
+            trip.save()
             sale.save()
+
             return redirect('admin_routes')
 
     context = {'sale': sale, 'form': form}
