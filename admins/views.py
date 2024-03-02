@@ -9,6 +9,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import calendar
 from datetime import datetime
 from django.http import JsonResponse
+from users.forms import SalesForm
 
 # Create your views here.
 
@@ -377,3 +378,21 @@ def transaction_listing(request):
     }
 
     return render(request, 'admins_temp/transaction-listing.html', context)
+
+
+# Edit Jar
+def edit_jar(request, record_id):
+    sale = Sales.objects.get(id=record_id)
+    form = SalesForm(instance=sale)
+
+    if request.method == 'POST':
+        form = SalesForm(request.POST, instance=sale)
+        if form.is_valid():
+            jars = form.cleaned_data['jars']
+
+            sale.jars = jars
+            sale.save()
+            return redirect('admin_routes')
+
+    context = {'sale': sale, 'form': form}
+    return render(request, 'admins_temp/edit-jar.html', context)

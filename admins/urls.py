@@ -13,4 +13,5 @@ urlpatterns = [
     path('edit-user/<int:user_id>/', views.edit_user, name='edit_user'),
     path('route-details/<int:route>/', views.route_details, name='route_details'),
     path('transaction-listing', views.transaction_listing, name='transaction_listing'),
+    path('edit-jar/<int:record_id>/', views.edit_jar, name='edit_jar'),
 ]
