@@ -417,4 +417,4 @@ def edit_jar(request, record_id):
             return redirect('admin_routes')
 
     context = {'sale': sale, 'form': form}
-    return render(request, 'admins_temp/edit-jar.html', context)
+    return render(request, 'admins_temp/edit-jar.html', context
